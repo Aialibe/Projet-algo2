@@ -112,7 +112,7 @@ void afficher_matrice(char** mat, int taille){
       printf("\n");
     }
   printf("\n");
-
+}
 
 int main(){
     char** plateau = allouer_matrice(GRILLE);
