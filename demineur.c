@@ -60,6 +60,16 @@ void initialiser_plateau(char** plateau){
     }
 }
 
+void initialiser_visible(char** visible){
+  //initialise la matrice visible par le joueur, au depart, rien n'est dcouvert donc on met des # partout
+  for(int i=0;i<GRILLE;i++){
+    for(int j=0;j<GRILLE; j++){
+      visible[i][j]='#';
+    }
+  }
+}
+
+
 void afficher_matrice_utilisateur(char** visible, char** plateau){
     for(int i=0;i<GRILLE;i++){
         for(int j=0; j<GRILLE;j++){
