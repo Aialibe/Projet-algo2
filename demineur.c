@@ -56,7 +56,7 @@ void initialiser(char** plateau){
 
 void afficher_matrice_utilisateur(char** visible, char** plateau){
     for(int i=0;i<GRILLE;i++){
-        for(intj=0; j<GRILLE;j++){
+        for(int j=0; j<GRILLE;j++){
             if(visible[i][j]=='D' || visible[i][j]=='#'){//si on a mis un drapeau ou la case n'est pas devoilee
                 printf("%c",visible[i][j]);
             }
