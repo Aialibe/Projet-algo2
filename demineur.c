@@ -104,6 +104,15 @@ void afficher_matrice_utilisateur(char** visible, char** plateau){
     printf("\n");
 }
 
+void afficher_matrice(char** mat, int taille){
+    for(int i=0;i<taille;i++){
+        for(int j=0;j<taille;j++){
+            printf("%c",mat[i][j]);
+        }
+    }
+}
+
+
 int main(){
     char** plateau = allouer_matrice(GRILLE);
     initialiser_plateau(plateau);
