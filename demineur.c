@@ -41,14 +41,20 @@ void liberer_matrice(char** mat,int taille){
 }
 
 
-void initialiser(char** plateau){
+void initialiser_plateau(char** plateau){
     int i = 0;
+    for(int x = 0; x < GRILLE; x++){
+        for(int y = 0; y < GRILLE; y++){
+            plateau[x][y] = '0'
+        }
+    }
     while(i < MINES){
         int mine = rand() % GRILLE*GRILLE;
         int x = trouver_position_x_depuis_identifiant(mine);
         int y = trouver_position_y_depuis_identifiant(mine);
         if(plateau[x][y] != 'M'){
             plateau[x][y] = 'M';
+            
             i++;
         }
     }
@@ -70,5 +76,9 @@ void afficher_matrice_utilisateur(char** visible, char** plateau){
 }
 
 int main(){
+    char** plateau = allouer_matrice(GRILLE);
+    initialiser_plateau(plateau);
+    char** visible
+
     return 0;
 }
