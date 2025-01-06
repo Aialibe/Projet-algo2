@@ -54,7 +54,19 @@ void initialiser_plateau(char** plateau){
         int y = trouver_position_y_depuis_identifiant(mine);
         if(plateau[x][y] != 'M'){
             plateau[x][y] = 'M';
-            
+            for(int i = -1; i <= 1; i++){
+                for(int j = -1; j <= 1; j++){
+                    //Parcours de toutes les cases adjacentes à la mine qui vient d'être posée
+                    if(x + i >= 0 && x + i < GRILLE && y + j >= 0 && y + j < GRILLE){
+                        //On vérifie que la case adjacente courante ne dépasse pas du plateau
+                        if(plateau[x + i][y + j] != 'M'){
+                            //Cas où la case adjacente courante n'est pas une mine, et est donc un numéro qui doit être incrémenté en raison de la mine ayant été ajouté en (x, y)
+                            plateau[x + i][y + j]++;
+                            //Incrémenter un caractère correspondant à un chiffre compris entre 0 et 8 de 1 correspond à incrémenter son code ASCII de 1 donc pas besoin de passer par des entiers
+                        }
+                    }
+                }
+            }
             i++;
         }
     }
