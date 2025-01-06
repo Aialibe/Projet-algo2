@@ -107,10 +107,11 @@ void afficher_matrice_utilisateur(char** visible, char** plateau){
 void afficher_matrice(char** mat, int taille){
     for(int i=0;i<taille;i++){
         for(int j=0;j<taille;j++){
-            printf("%c",mat[i][j]);
+            printf("%c ",mat[i][j]);
         }
+      printf("\n");
     }
-}
+  printf("\n");
 
 
 int main(){
