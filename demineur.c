@@ -138,7 +138,7 @@ void decouvrir_chiffes_adjacents(char** plateau, char** visible, int x, int y){
             for(int i=-1;i<=1;i++){
                 //on regarde toutes les cases autours si c'est un 0
                 for(int j=-1;j<=1;j++){
-                    if(/*i!=0 && j!=0 && */plateau[x][y]=='#'){//je n'appelle pas sur une case déja devoilée
+                    if(plateau[x][y]=='#'){//je n'appelle pas sur une case déja devoilée
                         decouvrir_chiffes_adjacents(plateau, visible, x+i, y+j);
                     }
                 }
