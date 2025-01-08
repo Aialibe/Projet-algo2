@@ -114,6 +114,32 @@ void afficher_matrice(char** mat, int taille){
   printf("\n");
 }
 
+
+void fonction_principale(){
+    bool* perdu = false;
+    bool* gagne = false;
+    int compteur_de_temps;
+    int* compteur_mines=MINES;
+    
+//init les matrices
+
+
+    while(!perdu && !gagne){
+        jouer(perdu, gagne, compteur_mines);
+        afficher_matrice
+    }
+    if(perdu){
+        printf("BOUH PERDU HAHA LOSER \n");
+        
+    }
+    else{
+        printf("TU AS GAGNE TOUS LES MARISSONS\n");
+    }
+
+}
+
+
+
 int main(){
     char** plateau = allouer_matrice(GRILLE);
     initialiser_plateau(plateau);
