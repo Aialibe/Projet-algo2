@@ -182,7 +182,7 @@ void jouer(char** plateau, char** visible, bool* perdu, bool* gagne, int* compte
     if(action == 1){
         //Le joueur casse une case
         if(visible[x][y] == 'D'){
-            printf("Action impossible");
+            printf("Action impossible\n");
             jouer(plateau, visible, perdu, gagne, compteur_mines);
         }
         if(plateau[x][y] == 'M'){
@@ -215,7 +215,7 @@ void jouer(char** plateau, char** visible, bool* perdu, bool* gagne, int* compte
         }
         else{
             //Le joueur essaye de poser un drapeau sur une case déjà découverte
-            printf("Action impossible");
+            printf("Action impossible\n");
             jouer(plateau, visible, perdu, gagne, compteur_mines);
         }
     }
