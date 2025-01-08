@@ -149,29 +149,91 @@ void decouvrir_chiffes_adjacents(char** plateau, char** visible, int x, int y){
 
 
 
+int nombre_drapeaux_adjacents(char** plateau, char** visible, bool* bien_places, int x, int y){
+    *bien_places = true;
+    int nombre_drapeaux = 0
+    for(int i = -1; i <= 1; i++){
+        for(int j = -1; j <= 1; j++){
+            if(est_dans_plateau(x + i, y + j)){
+                if(visible[x + i][y + j] == 'D'){
+                    nombre_drapeaux ++;
+                    if(plateau[x][y] != 'M'){
+                        *bien_places = false;
+                    }
+                }
+            }
+        }
+    }
+    return nombre_drapeaux;
+}
+
+void jouer(char** plateau, char** visible, bool* perdu, bool* gagne, int* compteur_mines){
+    int action = 0;
+    printf("Voulez-vous casser une case (1), poser ou casser un drapeau (2) ?");
+    while(action != 1 && action != 2){
+        scanf("%d", &action);
+    }
+    int x;
+    printf("Entrez une ligne : ");
+    scanf("%d", &x);
+    int y;
+    printf("Entrez une colonne : ");
+    scanf("%d", &y);
+    if(action == 1){
+        //Le joueur casse une case
+        if(visible[x][y] == 'D'){
+            printf("Action impossible");
+            jouer(plateau, visible, perdu, gagne, compteur_mines);
+        }
+        if(plateau[x][y] == 'M'){
+            //Le jouer essaye de casser une mine : défaite
+            *compteur_mines -= 1;
+            *perdu = true;
+            plateau[x][y] == 'X';       //Marquage resérvé pour la mine qui a fait perdre le jouer sous reserve d'existence
+        }
+        else{
+            bool bien_places;
+            int nombre_drapeaux = nombre_drapeaux_adjacents(plateau, visible, &bien_places, x, y);
+            if(visible[x][y] >= '1' && visible[x][y] <= '9' && nombre_drapeaux == atoi(visible[x][y]) && !bien_places){
+                *perdu = true;
+            }
+            else{
+                //Le joueur découvre un chiffre
+                decouvrir_chiffes_adjacents(plateau, visible, x, y);
+            }
+        }
+    }
+    else{
+        //Le joueur pose ou casse un drapeau
+        if(visible[x][y] == 'D'){
+            //La case visée était un drapeau donc on le casse
+            visible[x][y] = '#';
+        }
+        else if(visible[x][y] == '#'){
+            //La case visée n'est pas un drapeau et n'est pas découverte, elle devient un drapeau
+            visible[x][y] = 'D';
+        }
+        else{
+            //Le joueur essaye de poser un drapeau sur une case déjà découverte
+            printf("Action impossible");
+            jouer(plateau, visible, perdu, gagne, compteur_mines);
+        }
+    }
+}
+
+
 void fonction_principale(){
     bool* perdu = false;
     bool* gagne = false;
+    int compteur_de_temps;
     int* compteur_mines=MINES;
-    long clk_tck = CLOCKS_PER_SEC;
-    clock_t t_depart, t_apres_tour;
-    int temps_ecoule_depuis_debut=0;//en secondes
- 
-    //init les matrices
-    char** plateau = allouer_matrice(GRILLE);
-    char** visible = allouer_matrice(GRILLE);
-    initialiser_visible(visible);
-    initialiser_plateau(plateau);
+    
+//init les matrices
 
-    t_depart = clock(); //le temps au debut de la partie, ce qui nous interesse c'est la difference de temps
+
     while(!perdu && !gagne){
-        
-        jouer(perdu, gagne, compteur_mines);
-        t_apres_tour=clock();
-        temps_ecoule_depuis_debut=t_apres_tour-t_depart;
-        printf("Temps écoulé jusqu'ici : %d secondes \n\n",temps_ecoule_depuis_debut);
-        afficher_matrice_utilisateur(visible, plateau);
-
+        jouer(plateau, visible, perdu, gagne, compteur_mines);
+        afficher_matrice
     }
     if(perdu){
         printf("BOUH PERDU HAHA LOSER \n");
@@ -182,6 +244,7 @@ void fonction_principale(){
     }
 
 }
+
 
 
 
