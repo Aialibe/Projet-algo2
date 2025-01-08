@@ -61,7 +61,7 @@ void initialiser_plateau(char** plateau){
         }
     }
     while(i < MINES){
-        int mine = rand() % GRILLE*GRILLE;
+        int mine = rand() % (GRILLE*GRILLE);
         int x = trouver_position_x_depuis_identifiant(mine);
         int y = trouver_position_y_depuis_identifiant(mine);
         if(plateau[x][y] != 'M'){
