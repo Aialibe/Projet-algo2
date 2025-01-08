@@ -126,11 +126,24 @@ void afficher_matrice(char** mat, int taille){
   printf("\n");
 }
 
+
+void decouvrir_chiffes_adjacents(char** plateau, char** visible, int x, int y);
 void decouvrir_chiffes_adjacents(char** plateau, char** visible, int x, int y){
+    //x c'est la ligne qui va de haut en bas et y la colonne qui va de gauche a droite
     //Découvre toutes les cases qui doivent être découvertes lorsque la case (x, y) est cassée
-    if()
-    if(plateau[x][y] == '0'){
-        visible[x][y]
+
+    if(visible[x][y]!='D' && plateau[x][y]!='M'){
+        visible[x][y]=plateau[x][y];//on affiche la case, ca devrait etre un chiffre
+        if(plateau[x][y] == '0'){
+            for(int i=-1;i<=1;i++){
+                //on regarde toutes les cases autours si c'est un 0
+                for(int j=-1;j<=1;j++){
+                    if(/*i!=0 && j!=0 && */plateau[x][y]=='#'){//je n'appelle pas sur une case déja devoilée
+                        decouvrir_chiffes_adjacents(plateau, visible, x+i, y+j);
+                    }
+                }
+            }
+        }
     }
 }
 
