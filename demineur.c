@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <malloc.h>
 #include <stdlib.h>
-#include <bool.h>
+#include <stdbool.h>
 
 #define MINES 20
 #define GRILLE 10
