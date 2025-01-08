@@ -57,7 +57,7 @@ void initialiser_plateau(char** plateau){
     int i = 0;
     for(int x = 0; x < GRILLE; x++){
         for(int y = 0; y < GRILLE; y++){
-            plateau[x][y] = '0'
+            plateau[x][y] = '0';
         }
     }
     while(i < MINES){
@@ -69,7 +69,7 @@ void initialiser_plateau(char** plateau){
             for(int i = -1; i <= 1; i++){
                 for(int j = -1; j <= 1; j++){
                     //Parcours de toutes les cases adjacentes à la mine qui vient d'être posée
-                    if(est_dans_plateau(x,y)){
+                    if(est_dans_plateau(x + i, y + j)){
                         //On vérifie que la case adjacente courante ne dépasse pas du plateau
                         if(plateau[x + i][y + j] != 'M'){
                             //Cas où la case adjacente courante n'est pas une mine, et est donc un numéro qui doit être incrémenté en raison de la mine ayant été ajouté en (x, y)
@@ -151,7 +151,7 @@ void decouvrir_chiffes_adjacents(char** plateau, char** visible, int x, int y){
 
 int nombre_drapeaux_adjacents(char** plateau, char** visible, bool* bien_places, int x, int y){
     *bien_places = true;
-    int nombre_drapeaux = 0
+    int nombre_drapeaux = 0;
     for(int i = -1; i <= 1; i++){
         for(int j = -1; j <= 1; j++){
             if(est_dans_plateau(x + i, y + j)){
@@ -189,12 +189,12 @@ void jouer(char** plateau, char** visible, bool* perdu, bool* gagne, int* compte
             //Le jouer essaye de casser une mine : défaite
             *compteur_mines -= 1;
             *perdu = true;
-            plateau[x][y] == 'X';       //Marquage resérvé pour la mine qui a fait perdre le jouer sous reserve d'existence
+            plateau[x][y] = 'X';       //Marquage resérvé pour la mine qui a fait perdre le jouer sous reserve d'existence
         }
         else{
             bool bien_places;
             int nombre_drapeaux = nombre_drapeaux_adjacents(plateau, visible, &bien_places, x, y);
-            if(visible[x][y] >= '1' && visible[x][y] <= '9' && nombre_drapeaux == atoi(visible[x][y]) && !bien_places){
+            if(visible[x][y] >= '1' && visible[x][y] <= '9' && nombre_drapeaux == atoi(&visible[x][y]) && !bien_places){
                 *perdu = true;
             }
             else{
@@ -222,12 +222,11 @@ void jouer(char** plateau, char** visible, bool* perdu, bool* gagne, int* compte
 }
 
 
-
 void fonction_principale(){
-    bool* perdu = false;
-    bool* gagne = false;
-    int* compteur_mines=MINES;
-    long clk_tck = CLOCKS_PER_SEC;
+    bool perdu = false;
+    bool gagne = false;
+    int compteur_mines= MINES;
+    //long clk_tck = CLOCKS_PER_SEC;
     clock_t t_depart, t_apres_tour;
     int temps_ecoule_depuis_debut=0;//en secondes
  
@@ -240,7 +239,7 @@ void fonction_principale(){
     t_depart = clock(); //le temps au debut de la partie, ce qui nous interesse c'est la difference de temps
     while(!perdu && !gagne){
         
-        jouer(perdu, gagne, compteur_mines);
+        jouer(plateau, visible, &perdu, &gagne, &compteur_mines);
         t_apres_tour=clock();
         temps_ecoule_depuis_debut=t_apres_tour-t_depart;
         printf("Temps écoulé jusqu'ici : %d secondes \n\n",temps_ecoule_depuis_debut);
@@ -249,10 +248,13 @@ void fonction_principale(){
     }
     if(perdu){
         printf("BOUH PERDU HAHA LOSER \n");
-        
+        liberer_matrice(plateau, GRILLE);
+        liberer_matrice(visible, GRILLE);
     }
     else{
         printf("TU AS GAGNE TOUS LES MARISSONS\n");
+        liberer_matrice(plateau, GRILLE);
+        liberer_matrice(visible, GRILLE);
     }
 
 }
@@ -269,4 +271,3 @@ int main(){
 
     return 0;
 }
-
