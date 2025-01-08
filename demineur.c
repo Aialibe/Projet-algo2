@@ -22,6 +22,16 @@ int trouver_position_y_depuis_identifiant(int identifiant){
   return identifiant/(GRILLE);
 }
 
+bool est_dans_plateau(int x, int y){
+    //Renvoie true si (x, y) est dans le plateau, false sinon
+    if(x >= 0 && x < GRILLE && y >= 0 && y < GRILLE){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
 
 
 //plateau mines et les chiffres
