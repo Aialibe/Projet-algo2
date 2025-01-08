@@ -169,7 +169,7 @@ int nombre_drapeaux_adjacents(char** plateau, char** visible, bool* bien_places,
 
 void jouer(char** plateau, char** visible, bool* perdu, bool* gagne, int* compteur_mines){
     int action = 0;
-    printf("Voulez-vous casser une case (1), poser ou casser un drapeau (2) ?");
+    printf("Voulez-vous casser une case (1), poser ou casser un drapeau (2) ? ");
     while(action != 1 && action != 2){
         scanf("%d", &action);
     }
