@@ -2,6 +2,7 @@
 #include <malloc.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <time.h>
 
 #define MINES 20
 #define GRILLE 10
@@ -93,7 +94,7 @@ void afficher_matrice_utilisateur(char** visible, char** plateau){
     for(int i=0;i<GRILLE;i++){
         printf("%d ",i);
         for(int j=0; j<GRILLE;j++){
-            if(visible[i][j]=='D' || visible[i][j]=='#'){//si on a mis un drapeau ou la case n'est pas devoilee
+            if(visible[i][j]=='D' || visible[i][j]=='#' || visible[i][j]=='X'){//si on a mis un drapeau ou la case n'est pas devoilee
                 printf("%c ",visible[i][j]);
             }
             else{//la case est dévoilée
@@ -116,18 +117,30 @@ void afficher_matrice(char** mat, int taille){
 }
 
 
+
 void fonction_principale(){
     bool* perdu = false;
     bool* gagne = false;
-    int compteur_de_temps;
     int* compteur_mines=MINES;
-    
-//init les matrices
+    long clk_tck = CLOCKS_PER_SEC;
+    clock_t t_depart, t_apres_tour;
+    int temps_ecoule_depuis_debut=0;//en secondes
+ 
+    //init les matrices
+    char** plateau = allouer_matrice(GRILLE);
+    char** visible = allouer_matrice(GRILLE);
+    initialiser_visible(visible);
+    initialiser_plateau(plateau);
 
-
+    t_depart = clock(); //le temps au debut de la partie, ce qui nous interesse c'est la difference de temps
     while(!perdu && !gagne){
+        
         jouer(perdu, gagne, compteur_mines);
-        afficher_matrice
+        t_apres_tour=clock();
+        temps_ecoule_depuis_debut=t_apres_tour-t_depart;
+        printf("Temps écoulé jusqu'ici : %d secondes \n\n",temps_ecoule_depuis_debut);
+        afficher_matrice_utilisateur(visible, plateau);
+
     }
     if(perdu){
         printf("BOUH PERDU HAHA LOSER \n");
@@ -138,6 +151,7 @@ void fonction_principale(){
     }
 
 }
+
 
 
 
