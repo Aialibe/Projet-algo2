@@ -126,6 +126,14 @@ void afficher_matrice(char** mat, int taille){
   printf("\n");
 }
 
+void decouvrir_chiffes_adjacents(char** plateau, char** visible, int x, int y){
+    //Découvre toutes les cases qui doivent être découvertes lorsque la case (x, y) est cassée
+    if()
+    if(plateau[x][y] == '0'){
+        visible[x][y]
+    }
+}
+
 
 
 void fonction_principale(){
