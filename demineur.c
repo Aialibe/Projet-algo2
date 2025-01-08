@@ -69,7 +69,7 @@ void initialiser_plateau(char** plateau){
             for(int i = -1; i <= 1; i++){
                 for(int j = -1; j <= 1; j++){
                     //Parcours de toutes les cases adjacentes à la mine qui vient d'être posée
-                    if(x + i >= 0 && x + i < GRILLE && y + j >= 0 && y + j < GRILLE){
+                    if(est_dans_plateau(x,y)){
                         //On vérifie que la case adjacente courante ne dépasse pas du plateau
                         if(plateau[x + i][y + j] != 'M'){
                             //Cas où la case adjacente courante n'est pas une mine, et est donc un numéro qui doit être incrémenté en raison de la mine ayant été ajouté en (x, y)
