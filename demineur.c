@@ -222,18 +222,30 @@ void jouer(char** plateau, char** visible, bool* perdu, bool* gagne, int* compte
 }
 
 
+
 void fonction_principale(){
     bool* perdu = false;
     bool* gagne = false;
-    int compteur_de_temps;
     int* compteur_mines=MINES;
-    
-//init les matrices
+    long clk_tck = CLOCKS_PER_SEC;
+    clock_t t_depart, t_apres_tour;
+    int temps_ecoule_depuis_debut=0;//en secondes
+ 
+    //init les matrices
+    char** plateau = allouer_matrice(GRILLE);
+    char** visible = allouer_matrice(GRILLE);
+    initialiser_visible(visible);
+    initialiser_plateau(plateau);
 
-
+    t_depart = clock(); //le temps au debut de la partie, ce qui nous interesse c'est la difference de temps
     while(!perdu && !gagne){
-        jouer(plateau, visible, perdu, gagne, compteur_mines);
-        afficher_matrice
+        
+        jouer(perdu, gagne, compteur_mines);
+        t_apres_tour=clock();
+        temps_ecoule_depuis_debut=t_apres_tour-t_depart;
+        printf("Temps écoulé jusqu'ici : %d secondes \n\n",temps_ecoule_depuis_debut);
+        afficher_matrice_utilisateur(visible, plateau);
+
     }
     if(perdu){
         printf("BOUH PERDU HAHA LOSER \n");
@@ -249,10 +261,12 @@ void fonction_principale(){
 
 
 
+
+
+
 int main(){
-    char** plateau = allouer_matrice(GRILLE);
-    initialiser_plateau(plateau);
-    char** visible
+    fonction_principale();
 
     return 0;
 }
+
