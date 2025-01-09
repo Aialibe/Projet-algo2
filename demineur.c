@@ -210,9 +210,24 @@ void jouer(char** plateau, char** visible, bool* perdu, bool* gagne, int* compte
             printf("cas 1.autre \n");
             bool bien_places;
             int nombre_drapeaux = nombre_drapeaux_adjacents(plateau, visible, &bien_places, x, y);
-            if(visible[x][y] >= '1' && visible[x][y] <= '9' && nombre_drapeaux == atoi(&visible[x][y]) && !bien_places){
-                printf("cas 1.autre.perdu \n");
-                *perdu = true;
+            if(visible[x][y] >= '1' && visible[x][y] <= '9' && nombre_drapeaux == atoi(&visible[x][y])){
+                if(bien_places){
+                    printf("cas 1.autre.particulier.decouvre \n");
+                    for(int i = -1; i <= 1; i++){
+                        for(int j = -1; j <= 1; j++){
+                            if(est_dans_plateau(x+i,y+j)){
+                                if(visible[x+i][y+j] != 'D'){
+                                    visible[x+i][y+j] = plateau[x+i][y+j];
+                                }
+                            }
+                        }
+                    }
+                }
+                else{
+                    printf("cas 1.autre.particulier.perdu \n");
+                    *perdu = true;
+                }
+                
             }
             else{
                 printf("cas 1.autre.decouvr \n");
