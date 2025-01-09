@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <time.h>
 
-#define MINES 20
+#define MINES 5
 #define GRILLE 10
 
 
@@ -62,6 +62,7 @@ void initialiser_plateau(char** plateau){
     }
     while(i < MINES){
         int mine = rand() % (GRILLE*GRILLE);
+        printf("%d \n",mine);
         int x = trouver_position_x_depuis_identifiant(mine);
         int y = trouver_position_y_depuis_identifiant(mine);
         if(plateau[x][y] != 'M'){
@@ -138,7 +139,7 @@ void decouvrir_chiffes_adjacents(char** plateau, char** visible, int x, int y){
             for(int i=-1;i<=1;i++){
                 //on regarde toutes les cases autours si c'est un 0
                 for(int j=-1;j<=1;j++){
-                    if(plateau[x][y]=='#'){//je n'appelle pas sur une case déja devoilée
+                    if(/*i!=0 && j!=0 && */plateau[x][y]=='#'){//je n'appelle pas sur une case déja devoilée
                         decouvrir_chiffes_adjacents(plateau, visible, x+i, y+j);
                     }
                 }
@@ -169,7 +170,10 @@ int nombre_drapeaux_adjacents(char** plateau, char** visible, bool* bien_places,
 
 void jouer(char** plateau, char** visible, bool* perdu, bool* gagne, int* compteur_mines){
     int action = 0;
+    //afficher_matrice_utilisateur(visible,plateau);
+    //printf("on a affiche visible\n");
     printf("Voulez-vous casser une case (1), poser ou casser un drapeau (2) ? ");
+    
     while(action != 1 && action != 2){
         scanf("%d", &action);
     }
@@ -181,42 +185,56 @@ void jouer(char** plateau, char** visible, bool* perdu, bool* gagne, int* compte
     scanf("%d", &y);
     if(action == 1){
         //Le joueur casse une case
+        printf("cas 1 \n");
         if(visible[x][y] == 'D'){
+            printf("cas 1.D \n");
             printf("Action impossible\n");
             jouer(plateau, visible, perdu, gagne, compteur_mines);
         }
         if(plateau[x][y] == 'M'){
+            printf("cas 1.M \n");
             //Le jouer essaye de casser une mine : défaite
             *compteur_mines -= 1;
             *perdu = true;
             plateau[x][y] = 'X';       //Marquage resérvé pour la mine qui a fait perdre le jouer sous reserve d'existence
         }
         else{
+            printf("cas 1.autre \n");
             bool bien_places;
             int nombre_drapeaux = nombre_drapeaux_adjacents(plateau, visible, &bien_places, x, y);
             if(visible[x][y] >= '1' && visible[x][y] <= '9' && nombre_drapeaux == atoi(&visible[x][y]) && !bien_places){
+                printf("cas 1.autre.perdu \n");
                 *perdu = true;
             }
             else{
+                printf("cas 1.autre.decouvr \n");
                 //Le joueur découvre un chiffre
                 decouvrir_chiffes_adjacents(plateau, visible, x, y);
             }
         }
     }
     else{
+        printf("cas 2 \n");
         //Le joueur pose ou casse un drapeau
         if(visible[x][y] == 'D'){
+            printf("cas 2.D \n");
             //La case visée était un drapeau donc on le casse
+            printf("avant \n");
             visible[x][y] = '#';
+            printf("apres\n");
         }
         else if(visible[x][y] == '#'){
+            printf("cas 2.# \n");
             //La case visée n'est pas un drapeau et n'est pas découverte, elle devient un drapeau
             visible[x][y] = 'D';
         }
         else{
             //Le joueur essaye de poser un drapeau sur une case déjà découverte
+            printf("cas 2.imposs \n");
             printf("Action impossible\n");
             jouer(plateau, visible, perdu, gagne, compteur_mines);
+            /*Quznd on fait une action impossible (casser la ou ya un drapeau), et qu'on, dans le meme tour, 
+            eneleve le drapeua on obtient un 0 la ou yavait le drapeau*/
         }
     }
 }
@@ -236,6 +254,8 @@ void fonction_principale(){
     initialiser_visible(visible);
     initialiser_plateau(plateau);
 
+    afficher_matrice_utilisateur(visible, plateau);
+    afficher_matrice(plateau,GRILLE);
     t_depart = clock(); //le temps au debut de la partie, ce qui nous interesse c'est la difference de temps
     while(!perdu && !gagne){
         
