@@ -54,6 +54,7 @@ void liberer_matrice(char** mat,int taille){
 
 
 void initialiser_plateau(char** plateau){
+  srand(time(NULL));
     int i = 0;
     for(int x = 0; x < GRILLE; x++){
         for(int y = 0; y < GRILLE; y++){
