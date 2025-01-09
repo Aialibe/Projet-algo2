@@ -191,7 +191,7 @@ void jouer(char** plateau, char** visible, bool* perdu, bool* gagne, int* compte
             printf("Action impossible\n");
             jouer(plateau, visible, perdu, gagne, compteur_mines);
         }
-        if(plateau[x][y] == 'M'){
+        else if(plateau[x][y] == 'M'){
             printf("cas 1.M \n");
             //Le jouer essaye de casser une mine : défaite
             *compteur_mines -= 1;
