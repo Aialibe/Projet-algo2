@@ -228,7 +228,7 @@ void jouer(char** plateau, char** visible, bool* perdu, bool* gagne, int* compte
           }
           else{
               printf("cas 1.autre \n");
-              bool bien_places;
+              bool bien_places=false;
               int nombre_drapeaux = nombre_drapeaux_adjacents(plateau, visible, &bien_places, x, y);
               if(visible[x][y] >= '1' && visible[x][y] <= '9' && nombre_drapeaux == atoi(&visible[x][y])){
                   if(bien_places){
