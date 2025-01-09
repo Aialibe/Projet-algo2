@@ -195,7 +195,7 @@ bool est_ce_quon_a_gagne(char** visible, int taille, int compteur_mines){
 
 void jouer(char** plateau, char** visible, bool* perdu, bool* gagne, int* compteur_mines){
     *gagne=est_ce_quon_a_gagne(visible, GRILLE, *comtpeur_mines);
-    if(!gagne){
+    if(!(*gagne)){
 
   
       int action = 0;
