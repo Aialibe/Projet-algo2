@@ -95,15 +95,14 @@ void initialiser_visible(char** visible){
 }
 
 
-
 void afficher_matrice_utilisateur(char** visible, char** plateau){
-    printf("  ");
+    printf("    ");
     for(int k=0; k<GRILLE;k++){
         printf("%d ",k);
     }
-    printf("\n");
+    printf("\n \n");
     for(int i=0;i<GRILLE;i++){
-        printf("%d ",i);
+        printf("%d   ",i);
         for(int j=0; j<GRILLE;j++){
             if(visible[i][j]=='D' || visible[i][j]=='#' || visible[i][j]=='X'){//si on a mis un drapeau ou la case n'est pas devoilee
                 printf("%c ",visible[i][j]);
@@ -118,7 +117,13 @@ void afficher_matrice_utilisateur(char** visible, char** plateau){
 }
 
 void afficher_matrice(char** mat, int taille){
+    printf("    ");
+    for(int k=0; k<GRILLE;k++){
+        printf("%d ",k);
+    }
+    printf("\n\n");
     for(int i=0;i<taille;i++){
+        printf("%d   ",i);
         for(int j=0;j<taille;j++){
             printf("%c ",mat[i][j]);
         }
