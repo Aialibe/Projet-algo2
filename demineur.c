@@ -166,7 +166,7 @@ int nombre_drapeaux_adjacents(char** plateau, char** visible, bool* bien_places,
             if(est_dans_plateau(x + i, y + j)){
                 if(visible[x + i][y + j] == 'D'){
                     nombre_drapeaux ++;
-                    if(plateau[x][y] != 'M'){
+                    if(plateau[x + i][y + j] != 'M'){
                         *bien_places = false;
                     }
                 }
@@ -286,12 +286,6 @@ void fonction_principale(){
     }
 
 }
-
-
-
-
-
-
 
 
 int main(){
