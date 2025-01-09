@@ -54,7 +54,6 @@ void liberer_matrice(char** mat,int taille){
 
 
 void initialiser_plateau(char** plateau){
-  srand(time(NULL));
     int i = 0;
     for(int x = 0; x < GRILLE; x++){
         for(int y = 0; y < GRILLE; y++){
@@ -195,10 +194,8 @@ bool est_ce_quon_a_gagne(char** visible, int taille, int compteur_mines){
 
 
 void jouer(char** plateau, char** visible, bool* perdu, bool* gagne, int* compteur_mines){
-    *gagne=est_ce_quon_a_gagne(visible, GRILLE, *comtpeur_mines);
+    *gagne=est_ce_quon_a_gagne(visible, GRILLE, *compteur_mines);
     if(!(*gagne)){
-
-  
       int action = 0;
       printf("Voulez-vous casser une case (1), poser ou casser un drapeau (2) ? ");
       
@@ -228,8 +225,9 @@ void jouer(char** plateau, char** visible, bool* perdu, bool* gagne, int* compte
           }
           else{
               printf("cas 1.autre \n");
-              bool bien_places=false;
+              bool bien_places = false;
               int nombre_drapeaux = nombre_drapeaux_adjacents(plateau, visible, &bien_places, x, y);
+              printf("x = %d | y = %d\n", x, y);
               if(visible[x][y] >= '1' && visible[x][y] <= '9' && nombre_drapeaux == atoi(&visible[x][y])){
                   if(bien_places){
                       printf("cas 1.autre.particulier.decouvre \n");
