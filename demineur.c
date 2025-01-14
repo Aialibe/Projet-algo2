@@ -117,18 +117,18 @@ void afficher_matrice_utilisateur(char** visible, char** plateau){
 }
 
 void afficher_matrice(char** mat, int taille){
-    printf("    ");
-    for(int k=0; k<GRILLE;k++){
-        printf("%d ",k);
-    }
-    printf("\n\n");
-    for(int i=0;i<taille;i++){
-        printf("%d   ",i);
-        for(int j=0;j<taille;j++){
-            printf("%c ",mat[i][j]);
-        }
-      printf("\n");
-    }
+  printf("    ");
+  for(int k=0; k<taille;k++){
+      printf("%d ",k);
+  }
+  printf("\n\n");
+  for(int i=0;i<taille;i++){
+      printf("%d   ",i);
+      for(int j=0;j<taille;j++){
+          printf("%c ",mat[i][j]);
+      }
+    printf("\n");
+  }
   printf("\n");
 }
 
