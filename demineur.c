@@ -39,7 +39,7 @@ bool est_dans_plateau(int x, int y){
 
 char** allouer_matrice(int taille){
     char** mat = malloc(sizeof(char*)*taille);
-    for(int i=0;i<GRILLE;i++){
+    for(int i=0;i<taille;i++){
         mat[i]=malloc(sizeof(char)*taille);
     }
     return mat;
