@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <time.h>
+#include <math.h>
+#include "ARBRE.h"
 
 #define MINES 5
 #define GRILLE 10
