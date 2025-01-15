@@ -160,7 +160,7 @@ void decouvrir_chiffes_adjacents(char** plateau, char** visible, int x, int y){
 
 
 
-int nombre_drapeaux_adjacents(char** plateau, char** visible, bool* bien_places, int x, int y){
+int compter_drapeaux_adjacents(char** plateau, char** visible, bool* bien_places, int x, int y){
     *bien_places = true;
     int nombre_drapeaux = 0;
     for(int i = -1; i <= 1; i++){
@@ -228,9 +228,9 @@ void jouer(char** plateau, char** visible, bool* perdu, bool* gagne, int* compte
           else{
               printf("cas 1.autre \n");
               bool bien_places = false;
-              int nombre_drapeaux = nombre_drapeaux_adjacents(plateau, visible, &bien_places, x, y);
+              int nombre_drapeaux_adjacents = compter_drapeaux_adjacents(plateau, visible, &bien_places, x, y);
               printf("x = %d | y = %d\n", x, y);
-              if(visible[x][y] >= '1' && visible[x][y] <= '9' && nombre_drapeaux == atoi(&visible[x][y])){
+              if(visible[x][y] >= '1' && visible[x][y] <= '9' && nombre_drapeaux_adjacents == atoi(&visible[x][y])){
                   if(bien_places){
                       printf("cas 1.autre.particulier.decouvre \n");
                       for(int i = -1; i <= 1; i++){
