@@ -230,7 +230,8 @@ void jouer(char** plateau, char** visible, bool* perdu, bool* gagne, int* compte
               bool bien_places = false;
               int nombre_drapeaux_adjacents = compter_drapeaux_adjacents(plateau, visible, &bien_places, x, y);
               printf("x = %d | y = %d\n", x, y);
-              if(visible[x][y] >= '1' && visible[x][y] <= '9' && nombre_drapeaux_adjacents == atoi(&visible[x][y])){
+              if(visible[x][y] >= '1' && visible[x][y] <= '9' && nombre_drapeaux_adjacents == visible[x][y] - 48){
+                  //48 est le code ascii de 0 donc visible[x][y] - 48 correspond au chiffre associé au caractère visible[x][y]
                   if(bien_places){
                       printf("cas 1.autre.particulier.decouvre \n");
                       for(int i = -1; i <= 1; i++){
