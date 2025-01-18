@@ -684,8 +684,8 @@ void ia(char** visible, int x_depart, int y_depart){
     ARBRE a_pas_mine = ARBRE_creer(mat_pas_mine, NULL, NULL);
     creer_arbre_decision(a_pas_mine, TAILLE_ELT);
   
-    liberer_matrice(alentours);
-    liberer_matrice(mat_pas_mine);
+    liberer_matrice(alentours, TAILLE_ELT);
+    liberer_matrice(mat_pas_mine, TAILLE_ELT);
 
     printf("a_mine :\n");
     ARBRE_afficher_feuilles(a_mine, TAILLE_ELT);
