@@ -138,6 +138,323 @@ void afficher_matrice(char** mat, int taille){
 }
 
 
+
+//les super jolies fonctions d'affichage
+
+void quelle_case(int x, int y,int* a){
+    //renvoie les co de la ou on a clique sur la grille
+    
+    a[0]=y/40;//dans sdl, x va de gauche a droite et y de haut en bas
+    a[1]=x/40;//dans notre truc, x va de haut en bas et y de gauche a droite
+    //return a;
+}
+
+void dessiner_zero(SDL_Renderer *renderer,int x, int y){
+    //pour dessiner dans la bonne case 
+    
+    x=x*40;y=y*40;
+    //on creer un rectangle qu'on va dessiner ensuite
+    SDL_Rect rect = { x, y, 40, 40 };
+    //on change la couleur du pinceau
+    SDL_SetRenderDrawColor(renderer, GRIS, GRIS, GRIS, 255);//gris
+    //on dessine le rectangle defini au dessus
+    SDL_RenderFillRect(renderer, &rect);
+    //on met a jour la fenetre pour dessiner le rectangle dessine
+    SDL_RenderPresent(renderer);
+}
+
+void dessiner_un(SDL_Renderer *renderer,int x, int y){
+    x=x*40;y=y*40;
+    SDL_Rect rect = { x, y, 40, 40 };
+    SDL_SetRenderDrawColor(renderer, GRIS, GRIS, GRIS, 255);//gris
+    SDL_RenderFillRect(renderer, &rect);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);//bleu
+    SDL_Rect rect1 = { x+30, y+5, -EPAIS, 30 };
+    SDL_RenderFillRect(renderer, &rect1);
+    
+    SDL_RenderPresent(renderer);
+}
+
+void dessiner_deux(SDL_Renderer *renderer,int x, int y){
+    //pour dessiner dans la bonne case
+    x=x*40;y=y*40;
+    //on veut mettre le fond de la case ne gris clair
+    SDL_Rect rect = { x, y, 40, 40 };
+    SDL_SetRenderDrawColor(renderer, GRIS, GRIS, GRIS, 255);//gris
+    SDL_RenderFillRect(renderer, &rect);
+    //on va maintenant dessiner les lignes qui font un 2 en vert
+    SDL_Rect rect1 = { x+8, y+5, 22, EPAIS };
+    SDL_Rect rect2 = { x+8, y+20, 22, EPAIS };
+    SDL_Rect rect3 = { x+30, y+5, EPAIS, 15+EPAIS };
+    SDL_Rect rect4 = { x+8, y+35, 22+EPAIS, -EPAIS };
+    SDL_Rect rect5 = { x+8, y+20, EPAIS, 15 };
+
+    SDL_SetRenderDrawColor(renderer, 0, 123, 0, 255);//vert
+    SDL_RenderFillRect(renderer, &rect1);
+    SDL_RenderFillRect(renderer, &rect2);
+    SDL_RenderFillRect(renderer, &rect3);
+    SDL_RenderFillRect(renderer, &rect4);
+    SDL_RenderFillRect(renderer, &rect5);
+    
+
+
+    //on met a jour la fenetre
+    SDL_RenderPresent(renderer);
+}
+
+void dessiner_trois(SDL_Renderer *renderer,int x, int y){
+    x=x*40;y=y*40;
+    SDL_Rect rect = { x, y, 40, 40 };
+    SDL_SetRenderDrawColor(renderer, GRIS, GRIS, GRIS, 255);//gris
+    SDL_RenderFillRect(renderer, &rect);
+    SDL_SetRenderDrawColor(renderer, 255, 12, 12, 255);//rouge
+    SDL_Rect rect1 = { x+8, y+5, 22, EPAIS };
+    SDL_Rect rect2 = { x+8, y+20, 22, EPAIS };
+    SDL_Rect rect3 = { x+30, y+5, EPAIS, 30 };
+    SDL_Rect rect4 = { x+8, y+35, 22, -EPAIS };
+    SDL_RenderFillRect(renderer, &rect1);
+    SDL_RenderFillRect(renderer, &rect2);
+    SDL_RenderFillRect(renderer, &rect3);
+    SDL_RenderFillRect(renderer, &rect4);
+
+
+    SDL_RenderPresent(renderer);
+}
+
+void dessiner_quatre(SDL_Renderer *renderer,int x, int y){
+    x=x*40;y=y*40;
+    SDL_Rect rect = { x, y, 40, 40 };
+    SDL_SetRenderDrawColor(renderer, GRIS, GRIS, GRIS, 255);//gris
+    SDL_RenderFillRect(renderer, &rect);
+    SDL_Rect rect1 = { x+8, y+5, EPAIS, 15 };
+    SDL_Rect rect2 = { x+8, y+20, 22, EPAIS };
+    SDL_Rect rect3 = { x+30, y+5, -EPAIS, 30 };
+
+    SDL_SetRenderDrawColor(renderer, 8, 8, 128, 255);//bleu foncé
+    //SDL_RenderDrawLine(renderer,x+8,y+5,x+8,y+20);
+    SDL_RenderFillRect(renderer, &rect1);
+    SDL_RenderFillRect(renderer, &rect2);
+    SDL_RenderFillRect(renderer, &rect3);
+    SDL_RenderPresent(renderer);
+}
+
+void dessiner_cinq(SDL_Renderer *renderer,int x, int y){
+    x=x*40;y=y*40;
+    SDL_Rect rect = { x, y, 40, 40 };
+    SDL_SetRenderDrawColor(renderer, GRIS, GRIS, GRIS, 255);//gris
+    SDL_RenderFillRect(renderer, &rect);
+    SDL_SetRenderDrawColor(renderer, 123, 0, 0, 255);//rouge foncé
+    SDL_Rect rect1 = { x+8, y+5, 22, EPAIS };
+    SDL_Rect rect2 = { x+8, y+20, 22, EPAIS };
+    SDL_Rect rect3 = { x+30, y+20, EPAIS, 15 };
+    SDL_Rect rect4 = { x+8, y+35, 22+EPAIS, -EPAIS };
+    SDL_Rect rect5 = { x+8, y+5, EPAIS, 15 };
+    SDL_RenderFillRect(renderer, &rect1);
+    SDL_RenderFillRect(renderer, &rect2);
+    SDL_RenderFillRect(renderer, &rect3);
+    SDL_RenderFillRect(renderer, &rect4);
+    SDL_RenderFillRect(renderer, &rect5);
+    SDL_RenderPresent(renderer);
+}
+
+void dessiner_six(SDL_Renderer *renderer,int x, int y){
+    x=x*40;y=y*40;
+    SDL_Rect rect = { x, y, 40, 40 };
+    SDL_SetRenderDrawColor(renderer, GRIS, GRIS, GRIS, 255);//gris
+    SDL_RenderFillRect(renderer, &rect);
+    SDL_SetRenderDrawColor(renderer, 0, 123, 123, 255);//cyan
+    SDL_Rect rect1 = { x+8, y+5, 22, EPAIS };
+    SDL_Rect rect2 = { x+8, y+20, 22, EPAIS };
+    SDL_Rect rect3 = { x+30, y+20, EPAIS, 15 };
+    SDL_Rect rect4 = { x+8, y+35, 22+EPAIS, -EPAIS };
+    SDL_Rect rect5 = { x+8, y+5, EPAIS, 30 };
+    SDL_RenderFillRect(renderer, &rect1);
+    SDL_RenderFillRect(renderer, &rect2);
+    SDL_RenderFillRect(renderer, &rect3);
+    SDL_RenderFillRect(renderer, &rect4);
+    SDL_RenderFillRect(renderer, &rect5);
+    SDL_RenderPresent(renderer);
+}
+
+void dessiner_sept(SDL_Renderer *renderer,int x, int y){
+    x=x*40;y=y*40;
+    SDL_Rect rect = { x, y, 40, 40 };
+    SDL_SetRenderDrawColor(renderer, GRIS, GRIS, GRIS, 255);//gris
+    SDL_RenderFillRect(renderer, &rect);
+    SDL_SetRenderDrawColor(renderer, 22, 200, 40, 255);//vert ?
+    SDL_Rect rect1 = { x+8, y+5, 22, EPAIS };
+    SDL_Rect rect2 = { x+30, y+5, EPAIS, 30 };
+    SDL_RenderFillRect(renderer, &rect1);
+    SDL_RenderFillRect(renderer, &rect2);
+
+    SDL_RenderPresent(renderer);
+}
+
+void dessiner_huit(SDL_Renderer *renderer,int x, int y){
+    x=x*40;y=y*40;
+    SDL_Rect rect = { x, y, 40, 40 };
+    SDL_SetRenderDrawColor(renderer, GRIS, GRIS, GRIS, 255);//gris
+    SDL_RenderFillRect(renderer, &rect);
+    SDL_SetRenderDrawColor(renderer, 230, 90, 230, 255);//rose ?
+    SDL_Rect rect1 = { x+8, y+5, 22, EPAIS };
+    SDL_Rect rect2 = { x+8, y+20, 22, EPAIS };
+    SDL_Rect rect3 = { x+30, y+5, EPAIS, 30 };
+    SDL_Rect rect4 = { x+8, y+35, 22+EPAIS, -EPAIS };
+    SDL_Rect rect5 = { x+8, y+5, EPAIS, 30 };
+    SDL_RenderFillRect(renderer, &rect1);
+    SDL_RenderFillRect(renderer, &rect2);
+    SDL_RenderFillRect(renderer, &rect3);
+    SDL_RenderFillRect(renderer, &rect4);
+    SDL_RenderFillRect(renderer, &rect5); 
+    SDL_RenderPresent(renderer);
+}
+
+void dessiner_drapeau(SDL_Renderer *renderer,int x, int y){
+    x=x*40;y=y*40;
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);//rouge
+    SDL_RenderDrawLine(renderer,x+20,y+5,x+8,y+11);
+    SDL_RenderDrawLine(renderer,x+20,y+20,x+8,y+11);
+    SDL_RenderDrawLine(renderer,x+20,y+5,x+20,y+20);
+    SDL_RenderPresent(renderer);
+
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);//noir
+    SDL_RenderDrawLine(renderer,x+20,y+20,x+8,y+35);
+    SDL_RenderDrawLine(renderer,x+20,y+20,x+30,y+35);
+    SDL_RenderDrawLine(renderer,x+8,y+35,x+30,y+35);
+    SDL_RenderPresent(renderer);
+}
+
+void dessiner_case_base(SDL_Renderer *renderer,int x, int y){
+    x=x*40;y=y*40;
+    SDL_Rect rect = { x, y, 39, 39 };
+    SDL_SetRenderDrawColor(renderer, 160, 160, 160, 255);//gris fonce
+    SDL_RenderFillRect(renderer, &rect);
+    SDL_RenderPresent(renderer);
+}
+
+
+void dessiner_bombe(SDL_Renderer *renderer,int x, int y){
+    x=x*40;y=y*40;
+    SDL_Rect rect = { x, y, 39, 39 };
+    SDL_SetRenderDrawColor(renderer, GRIS, GRIS, GRIS, 255);//gris
+    SDL_RenderFillRect(renderer, &rect);
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);//rouge ?
+    SDL_RenderDrawLine(renderer,x,y,x+40,y+40);
+    SDL_RenderDrawLine(renderer,x+40,y,x,y+40);
+    SDL_RenderPresent(renderer);
+}
+
+
+
+
+void init_jeu(SDL_Renderer *renderer){
+    // Couleur de fond (gris)
+    SDL_SetRenderDrawColor(renderer, 160, 160, 160, 255);//gris foncé de base
+    SDL_RenderClear(renderer);
+
+    // Couleur des carrés non remplis pour faire les lignes (noir)
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    
+    // Affichage de plusieurs carrés (les lignes)
+    for (int i = 0; i < GRILLE; i++) {
+        for(int j=0;j<GRILLE;j++){
+            SDL_Rect rect = { i*40, 40*j, 40, 40 };
+            SDL_RenderDrawRect(renderer,&rect);
+        }
+        
+    }
+    // Mise à jour de l'écran
+    SDL_RenderPresent(renderer);
+}
+
+
+void mettre_a_jour_affichage(SDL_Renderer *renderer, char** visible, char** plateau){
+    for(int i=0;i<GRILLE;i++){
+        for(int j=0; j<GRILLE;j++){
+            if(visible[i][j]=='D' || visible[i][j]=='#' || visible[i][j]=='X'){//si on a mis un drapeau ou la case n'est pas devoilee
+                switch (visible[i][j]){
+                    case 'D': dessiner_drapeau(renderer,j,i);
+                    break;
+                    case 'X': dessiner_bombe(renderer,j,i);
+                    break;
+                    case '#': dessiner_case_base(renderer,j,i);
+                    break;
+                    default : dessiner_case_base(renderer,j,i);
+                    break;//ca fait rien, je pourrais autant mettre NULL
+                }
+            }
+            else{//la case est dévoilée
+                switch (plateau[i][j]){
+                    case '0': dessiner_zero(renderer,j,i);
+                    break;
+                    case '1': dessiner_un(renderer,j,i);
+                    break;
+                    case '2': dessiner_deux(renderer,j,i);
+                    break;
+                    case '3': dessiner_trois(renderer,j,i);
+                    break;
+                    case '4': dessiner_quatre(renderer,j,i);
+                    break;
+                    case '5': dessiner_cinq(renderer,j,i);
+                    break;
+                    case '6': dessiner_six(renderer,j,i);
+                    break;
+                    case '7': dessiner_sept(renderer,j,i);
+                    break;
+                    case '8': dessiner_huit(renderer,j,i);
+                    break;
+                    default :dessiner_case_base(renderer,j,i);break;
+                }
+            }
+        }
+        printf("\n");
+    }
+}
+
+
+void affichage_fin(SDL_Renderer *renderer, char** visible, char** plateau){
+    for(int i=0;i<GRILLE;i++){
+        for(int j=0; j<GRILLE;j++){
+            if(visible[i][j]=='D' ){
+                dessiner_drapeau(renderer,j,i);
+            }
+            else{//la case est dévoilée
+                switch (plateau[i][j]){
+                    case '0': dessiner_zero(renderer,j,i);
+                    break;
+                    case '1': dessiner_un(renderer,j,i);
+                    break;
+                    case '2': dessiner_deux(renderer,j,i);
+                    break;
+                    case '3': dessiner_trois(renderer,j,i);
+                    break;
+                    case '4': dessiner_quatre(renderer,j,i);
+                    break;
+                    case '5': dessiner_cinq(renderer,j,i);
+                    break;
+                    case '6': dessiner_six(renderer,j,i);
+                    break;
+                    case '7': dessiner_sept(renderer,j,i);
+                    break;
+                    case '8': dessiner_huit(renderer,j,i);
+                    break;
+                    case 'M': dessiner_bombe(renderer,j,i);
+                    break;
+                    default :dessiner_case_base(renderer,j,i);break;
+                }
+            }
+        }
+        printf("\n");
+    }
+}
+
+
+
+
+
+
+
+
 void decouvrir_chiffes_adjacents(char** plateau, char** visible, int x, int y);
 void decouvrir_chiffes_adjacents(char** plateau, char** visible, int x, int y){
     //x c'est la ligne qui va de haut en bas et y la colonne qui va de gauche a droite
