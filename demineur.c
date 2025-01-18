@@ -159,21 +159,21 @@ void quelle_case(int x, int y,int* a){
     //return a;
 }
 
-void dessiner_zero(SDL_Renderer *renderer,int x, int y){
-    //pour dessiner dans la bonne case 
+void afficher_zero(SDL_Renderer *renderer,int x, int y){
+    //pour afficher dans la bonne case 
     
     x=x*40;y=y*40;
-    //on creer un rectangle qu'on va dessiner ensuite
+    //on creer un rectangle qu'on va afficher ensuite
     SDL_Rect rect = { x, y, 40, 40 };
     //on change la couleur du pinceau
     SDL_SetRenderDrawColor(renderer, GRIS, GRIS, GRIS, 255);//gris
     //on dessine le rectangle defini au dessus
     SDL_RenderFillRect(renderer, &rect);
-    //on met a jour la fenetre pour dessiner le rectangle dessine
+    //on met a jour la fenetre pour afficher le rectangle dessine
     SDL_RenderPresent(renderer);
 }
 
-void dessiner_un(SDL_Renderer *renderer,int x, int y){
+void afficher_un(SDL_Renderer *renderer,int x, int y){
     x=x*40;y=y*40;
     SDL_Rect rect = { x, y, 40, 40 };
     SDL_SetRenderDrawColor(renderer, GRIS, GRIS, GRIS, 255);//gris
@@ -185,14 +185,14 @@ void dessiner_un(SDL_Renderer *renderer,int x, int y){
     SDL_RenderPresent(renderer);
 }
 
-void dessiner_deux(SDL_Renderer *renderer,int x, int y){
-    //pour dessiner dans la bonne case
+void afficher_deux(SDL_Renderer *renderer,int x, int y){
+    //pour afficher dans la bonne case
     x=x*40;y=y*40;
     //on veut mettre le fond de la case ne gris clair
     SDL_Rect rect = { x, y, 40, 40 };
     SDL_SetRenderDrawColor(renderer, GRIS, GRIS, GRIS, 255);//gris
     SDL_RenderFillRect(renderer, &rect);
-    //on va maintenant dessiner les lignes qui font un 2 en vert
+    //on va maintenant afficher les lignes qui font un 2 en vert
     SDL_Rect rect1 = { x+8, y+5, 22, EPAIS };
     SDL_Rect rect2 = { x+8, y+20, 22, EPAIS };
     SDL_Rect rect3 = { x+30, y+5, EPAIS, 15+EPAIS };
@@ -212,7 +212,7 @@ void dessiner_deux(SDL_Renderer *renderer,int x, int y){
     SDL_RenderPresent(renderer);
 }
 
-void dessiner_trois(SDL_Renderer *renderer,int x, int y){
+void afficher_trois(SDL_Renderer *renderer,int x, int y){
     x=x*40;y=y*40;
     SDL_Rect rect = { x, y, 40, 40 };
     SDL_SetRenderDrawColor(renderer, GRIS, GRIS, GRIS, 255);//gris
@@ -231,7 +231,7 @@ void dessiner_trois(SDL_Renderer *renderer,int x, int y){
     SDL_RenderPresent(renderer);
 }
 
-void dessiner_quatre(SDL_Renderer *renderer,int x, int y){
+void afficher_quatre(SDL_Renderer *renderer,int x, int y){
     x=x*40;y=y*40;
     SDL_Rect rect = { x, y, 40, 40 };
     SDL_SetRenderDrawColor(renderer, GRIS, GRIS, GRIS, 255);//gris
@@ -248,7 +248,7 @@ void dessiner_quatre(SDL_Renderer *renderer,int x, int y){
     SDL_RenderPresent(renderer);
 }
 
-void dessiner_cinq(SDL_Renderer *renderer,int x, int y){
+void afficher_cinq(SDL_Renderer *renderer,int x, int y){
     x=x*40;y=y*40;
     SDL_Rect rect = { x, y, 40, 40 };
     SDL_SetRenderDrawColor(renderer, GRIS, GRIS, GRIS, 255);//gris
@@ -267,7 +267,7 @@ void dessiner_cinq(SDL_Renderer *renderer,int x, int y){
     SDL_RenderPresent(renderer);
 }
 
-void dessiner_six(SDL_Renderer *renderer,int x, int y){
+void afficher_six(SDL_Renderer *renderer,int x, int y){
     x=x*40;y=y*40;
     SDL_Rect rect = { x, y, 40, 40 };
     SDL_SetRenderDrawColor(renderer, GRIS, GRIS, GRIS, 255);//gris
@@ -286,7 +286,7 @@ void dessiner_six(SDL_Renderer *renderer,int x, int y){
     SDL_RenderPresent(renderer);
 }
 
-void dessiner_sept(SDL_Renderer *renderer,int x, int y){
+void afficher_sept(SDL_Renderer *renderer,int x, int y){
     x=x*40;y=y*40;
     SDL_Rect rect = { x, y, 40, 40 };
     SDL_SetRenderDrawColor(renderer, GRIS, GRIS, GRIS, 255);//gris
@@ -300,7 +300,7 @@ void dessiner_sept(SDL_Renderer *renderer,int x, int y){
     SDL_RenderPresent(renderer);
 }
 
-void dessiner_huit(SDL_Renderer *renderer,int x, int y){
+void afficher_huit(SDL_Renderer *renderer,int x, int y){
     x=x*40;y=y*40;
     SDL_Rect rect = { x, y, 40, 40 };
     SDL_SetRenderDrawColor(renderer, GRIS, GRIS, GRIS, 255);//gris
@@ -319,7 +319,7 @@ void dessiner_huit(SDL_Renderer *renderer,int x, int y){
     SDL_RenderPresent(renderer);
 }
 
-void dessiner_drapeau(SDL_Renderer *renderer,int x, int y){
+void afficher_drapeau(SDL_Renderer *renderer,int x, int y){
     x=x*40;y=y*40;
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);//rouge
     SDL_RenderDrawLine(renderer,x+20,y+5,x+8,y+11);
@@ -334,7 +334,7 @@ void dessiner_drapeau(SDL_Renderer *renderer,int x, int y){
     SDL_RenderPresent(renderer);
 }
 
-void dessiner_case_base(SDL_Renderer *renderer,int x, int y){
+void afficher_case_base(SDL_Renderer *renderer,int x, int y){
     x=x*40;y=y*40;
     SDL_Rect rect = { x, y, 39, 39 };
     SDL_SetRenderDrawColor(renderer, 160, 160, 160, 255);//gris fonce
@@ -343,7 +343,7 @@ void dessiner_case_base(SDL_Renderer *renderer,int x, int y){
 }
 
 
-void dessiner_bombe(SDL_Renderer *renderer,int x, int y){
+void afficher_bombe(SDL_Renderer *renderer,int x, int y){
     x=x*40;y=y*40;
     SDL_Rect rect = { x, y, 39, 39 };
     SDL_SetRenderDrawColor(renderer, GRIS, GRIS, GRIS, 255);//gris
@@ -383,37 +383,37 @@ void mettre_a_jour_affichage(SDL_Renderer *renderer, char** visible, char** plat
         for(int j=0; j<GRILLE;j++){
             if(visible[i][j]=='D' || visible[i][j]=='#' || visible[i][j]=='X'){//si on a mis un drapeau ou la case n'est pas devoilee
                 switch (visible[i][j]){
-                    case 'D': dessiner_drapeau(renderer,j,i);
+                    case 'D': afficher_drapeau(renderer,j,i);
                     break;
-                    case 'X': dessiner_bombe(renderer,j,i);
+                    case 'X': afficher_bombe(renderer,j,i);
                     break;
-                    case '#': dessiner_case_base(renderer,j,i);
+                    case '#': afficher_case_base(renderer,j,i);
                     break;
-                    default : dessiner_case_base(renderer,j,i);
+                    default : afficher_case_base(renderer,j,i);
                     break;//ca fait rien, je pourrais autant mettre NULL
                 }
             }
             else{//la case est dévoilée
                 switch (plateau[i][j]){
-                    case '0': dessiner_zero(renderer,j,i);
+                    case '0': afficher_zero(renderer,j,i);
                     break;
-                    case '1': dessiner_un(renderer,j,i);
+                    case '1': afficher_un(renderer,j,i);
                     break;
-                    case '2': dessiner_deux(renderer,j,i);
+                    case '2': afficher_deux(renderer,j,i);
                     break;
-                    case '3': dessiner_trois(renderer,j,i);
+                    case '3': afficher_trois(renderer,j,i);
                     break;
-                    case '4': dessiner_quatre(renderer,j,i);
+                    case '4': afficher_quatre(renderer,j,i);
                     break;
-                    case '5': dessiner_cinq(renderer,j,i);
+                    case '5': afficher_cinq(renderer,j,i);
                     break;
-                    case '6': dessiner_six(renderer,j,i);
+                    case '6': afficher_six(renderer,j,i);
                     break;
-                    case '7': dessiner_sept(renderer,j,i);
+                    case '7': afficher_sept(renderer,j,i);
                     break;
-                    case '8': dessiner_huit(renderer,j,i);
+                    case '8': afficher_huit(renderer,j,i);
                     break;
-                    default :dessiner_case_base(renderer,j,i);break;
+                    default :afficher_case_base(renderer,j,i);break;
                 }
             }
         }
@@ -426,31 +426,31 @@ void affichage_fin(SDL_Renderer *renderer, char** visible, char** plateau){
     for(int i=0;i<GRILLE;i++){
         for(int j=0; j<GRILLE;j++){
             if(visible[i][j]=='D' ){
-                dessiner_drapeau(renderer,j,i);
+                afficher_drapeau(renderer,j,i);
             }
             else{//la case est dévoilée
                 switch (plateau[i][j]){
-                    case '0': dessiner_zero(renderer,j,i);
+                    case '0': afficher_zero(renderer,j,i);
                     break;
-                    case '1': dessiner_un(renderer,j,i);
+                    case '1': afficher_un(renderer,j,i);
                     break;
-                    case '2': dessiner_deux(renderer,j,i);
+                    case '2': afficher_deux(renderer,j,i);
                     break;
-                    case '3': dessiner_trois(renderer,j,i);
+                    case '3': afficher_trois(renderer,j,i);
                     break;
-                    case '4': dessiner_quatre(renderer,j,i);
+                    case '4': afficher_quatre(renderer,j,i);
                     break;
-                    case '5': dessiner_cinq(renderer,j,i);
+                    case '5': afficher_cinq(renderer,j,i);
                     break;
-                    case '6': dessiner_six(renderer,j,i);
+                    case '6': afficher_six(renderer,j,i);
                     break;
-                    case '7': dessiner_sept(renderer,j,i);
+                    case '7': afficher_sept(renderer,j,i);
                     break;
-                    case '8': dessiner_huit(renderer,j,i);
+                    case '8': afficher_huit(renderer,j,i);
                     break;
-                    case 'M': dessiner_bombe(renderer,j,i);
+                    case 'M': afficher_bombe(renderer,j,i);
                     break;
-                    default :dessiner_case_base(renderer,j,i);break;
+                    default :afficher_case_base(renderer,j,i);break;
                 }
             }
         }
@@ -791,6 +791,18 @@ void ia(char** visible, int x_depart, int y_depart){
             securise = false;
         }
     }
+    if(certitude){
+        printf("C'est à 100 pour cent ");
+    }
+    else{
+        printf("C'est probablement ");
+    }
+    if(securise){
+        printf("securisé\n");
+    }
+    else{
+        printf("pas securisé");
+    }
 }
 
 
@@ -823,10 +835,12 @@ void fonction_principale(){
 //fin partie affichage graphique
 
 
-    dessiner_matrice_utilisateur(visible, plateau);
-    dessiner_matrice(plateau,GRILLE);
+    afficher_matrice_utilisateur(visible, plateau);
+    afficher_matrice(plateau,GRILLE);
     t_depart = clock(); //le temps au debut de la partie, ce qui nous interesse c'est la difference de temps
-
+    int x; int y; int action=0;
+    int* kase=malloc(sizeof(int)*2);
+    Uint32 buttons;
     SDL_Event events; 
     SDL_bool run = SDL_TRUE;
     //tan que qu'on ferme pas la fenetre on joue
@@ -838,13 +852,13 @@ void fonction_principale(){
                         run = SDL_FALSE;//on ferme la fenetre et fin du jeu
                     break;
                 case SDL_MOUSEBUTTONDOWN: // Click de souris 
-                    int x, y;
+                    
                     //int* kase;
-                    Uint32 buttons =SDL_GetMouseState(&x, &y);
-                    int* kase=malloc(sizeof(int)*2);
+                    buttons =SDL_GetMouseState(&x, &y);
+                    
                     quelle_case(x,y,kase);//je recupère la case ou on a clique
                     SDL_Log("+clic en %d %d",kase[0],kase[1]);
-                    int action=0;
+                    action=0;
                     if (buttons & SDL_BUTTON(SDL_BUTTON_LEFT)){
                         action=1;//clique gauche
                         printf("gauche");
@@ -860,7 +874,7 @@ void fonction_principale(){
                     temps_ecoule_depuis_debut=(t_apres_tour-t_depart) /CLOCKS_PER_SEC;
                     printf("Temps écoulé jusqu'ici : %d secondes \n\n",temps_ecoule_depuis_debut);
                     mettre_a_jour_affichage(renderer,visible, plateau);
-                    dessiner_matrice_utilisateur(visible,plateau);
+                    afficher_matrice_utilisateur(visible,plateau);
                     //SDL_RenderPresent(renderer);
                     break;
                 }
