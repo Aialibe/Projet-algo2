@@ -9,8 +9,4 @@ J'ai créé ouest 06/01/2025 à 11h11
 
 /!\ /!\
 
-JE VAIS FAIRE LA FUSION ENTRE LE CODE ACTUELLEMENT SUR LE DEMINEUR.C ET L'AFFICHAGE GRAPHIQUE
-JE TOUCHE PAS A DEMINEUR.C, QUAND J'AURAI FINI DE TOUT FUSIONNER JE CREERAI UN NOUVEAU .C QUI AURA L'AFFICHAGE GRAPHIQUE
-
-
-ya un probleme de sanitiser quand on veut cliquer
+POUR INSTALLER SDL2 taper : sudo apt install libsdl2-dev  dans le terminal linux
