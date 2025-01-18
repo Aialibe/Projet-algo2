@@ -679,6 +679,9 @@ void ia(char** visible, int x_depart, int y_depart){
     ELT mat_pas_mine = copier_matrice(alentours, TAILLE_ELT);
     ARBRE a_pas_mine = ARBRE_creer(mat_pas_mine, NULL, NULL);
     creer_arbre_decision(a_pas_mine, TAILLE_ELT);
+  
+    liberer_matrice(alentours);
+    liberer_matrice(mat_pas_mine);
 
     printf("a_mine :\n");
     ARBRE_afficher_feuilles(a_mine, TAILLE_ELT);
@@ -696,6 +699,9 @@ void ia(char** visible, int x_depart, int y_depart){
     float ratio_possible_mine = (float)nb_feuilles_possibles_a_mine/(float)nb_feuilles_a_mine;
     float ratio_possible_pas_mine = (float)nb_feuilles_possibles_a_pas_mine/(float)nb_feuilles_a_pas_mine;
 
+    ARBRE_liberer(a_mine);
+    ARBRE_liberer(a_pas_mine);
+  
     bool securise;
     bool certitude;
     if(ratio_possible_mine == 0){
