@@ -4,10 +4,13 @@
 #include <stdbool.h>
 #include <time.h>
 #include <math.h>
+#include <SDL2/SDL.h>
 #include "ARBRE.h"
 
 #define MINES 5
 #define GRILLE 10
+#define GRIS 189
+#define EPAIS 3
 
 
 int trouver_identifiant_depuis_position(int x, int y){
