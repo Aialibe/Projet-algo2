@@ -515,28 +515,18 @@ bool est_ce_quon_a_gagne(char** visible, int taille, int compteur_mines){
 
 
 
-void jouer(char** plateau, char** visible, bool* perdu, bool* gagne, int* compteur_mines){
+void jouer(char** plateau, char** visible, bool* perdu, bool* gagne, int* compteur_mines, int x, int y, int act){
     *gagne=est_ce_quon_a_gagne(visible, GRILLE, *compteur_mines);
     if(!(*gagne)){
-      int action = 0;
-      printf("Voulez-vous casser une case (1), poser ou casser un drapeau (2) ? ");
+      int action = act;
       
-      while(action != 1 && action != 2){
-          scanf("%d", &action);
-      }
-      int x;
-      printf("Entrez une ligne : ");
-      scanf("%d", &x);
-      int y;
-      printf("Entrez une colonne : ");
-      scanf("%d", &y);
       if(action == 1){
           //Le joueur casse une case
           printf("cas 1 \n");
           if(visible[x][y] == 'D'){
               printf("cas 1.D \n");
               printf("Action impossible\n");
-              jouer(plateau, visible, perdu, gagne, compteur_mines);
+              //jouer(plateau, visible, perdu, gagne, compteur_mines,x,y);
           }
           else if(plateau[x][y] == 'M'){
               printf("cas 1.M \n");
@@ -596,7 +586,7 @@ void jouer(char** plateau, char** visible, bool* perdu, bool* gagne, int* compte
               //Le joueur essaye de poser un drapeau sur une case déjà découverte
               printf("cas 2.imposs \n");
               printf("Action impossible\n");
-              jouer(plateau, visible, perdu, gagne, compteur_mines);
+              //jouer(plateau, visible, perdu, gagne, compteur_mines,x,y,action);
               /*Quznd on fait une action impossible (casser la ou ya un drapeau), et qu'on, dans le meme tour, 
               eneleve le drapeua on obtient un 0 la ou yavait le drapeau*/
           }
@@ -619,30 +609,102 @@ void fonction_principale(){
     initialiser_visible(visible);
     initialiser_plateau(plateau);
 
-    afficher_matrice_utilisateur(visible, plateau);
-    afficher_matrice(plateau,GRILLE);
-    t_depart = clock(); //le temps au debut de la partie, ce qui nous interesse c'est la difference de temps
-    while(!perdu && !gagne){
-        
-        jouer(plateau, visible, &perdu, &gagne, &compteur_mines);
-        t_apres_tour=clock();
-        temps_ecoule_depuis_debut=t_apres_tour-t_depart;
-        printf("Temps écoulé jusqu'ici : %d secondes \n\n",temps_ecoule_depuis_debut);
-        afficher_matrice_utilisateur(visible, plateau);
-
+//partie affichage graphique
+    // Initialisation de SDL
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        printf("Erreur d'initialisation de SDL: %s\n", SDL_GetError());
+        //return 1;
     }
+    // Création de la fenêtre
+    SDL_Window* window = SDL_CreateWindow("Affichage de carrés", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, GRILLE*40, GRILLE*40, SDL_WINDOW_SHOWN);
+    SDL_SetWindowTitle(window,"Demineur");
+    // Création du renderer
+    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    init_jeu(renderer);
+//fin partie affichage graphique
+
+
+    dessiner_matrice_utilisateur(visible, plateau);
+    dessiner_matrice(plateau,GRILLE);
+    t_depart = clock(); //le temps au debut de la partie, ce qui nous interesse c'est la difference de temps
+
+    SDL_Event events; 
+    SDL_bool run = SDL_TRUE;
+    //tan que qu'on ferme pas la fenetre on joue
+    while(!perdu && !gagne && run){
+        while (SDL_PollEvent(&events)) {//si ya on fait un truc en particulier (ici click souris interessant)
+            switch(events.type){
+                case SDL_WINDOWEVENT://si on clique sur la croix de la fentre
+                    if (events.window.event == SDL_WINDOWEVENT_CLOSE)
+                        run = SDL_FALSE;//on ferme la fenetre et fin du jeu
+                    break;
+                case SDL_MOUSEBUTTONDOWN: // Click de souris 
+                    int x, y;
+                    //int* kase;
+                    Uint32 buttons =SDL_GetMouseState(&x, &y);
+                    int* kase=malloc(sizeof(int)*2);
+                    quelle_case(x,y,kase);//je recupère la case ou on a clique
+                    SDL_Log("+clic en %d %d",kase[0],kase[1]);
+                    int action=0;
+                    if (buttons & SDL_BUTTON(SDL_BUTTON_LEFT)){
+                        action=1;//clique gauche
+                        printf("gauche");
+                    }
+                    else if(buttons & SDL_BUTTON(SDL_BUTTON_RIGHT)){
+                        printf("droite");
+                        action=2;
+                    }
+                    
+                    jouer(plateau, visible, &perdu, &gagne, &compteur_mines,kase[0],kase[1],action);
+                    free(kase);
+                    t_apres_tour=clock();
+                    temps_ecoule_depuis_debut=(t_apres_tour-t_depart) /CLOCKS_PER_SEC;
+                    printf("Temps écoulé jusqu'ici : %d secondes \n\n",temps_ecoule_depuis_debut);
+                    mettre_a_jour_affichage(renderer,visible, plateau);
+                    dessiner_matrice_utilisateur(visible,plateau);
+                    //SDL_RenderPresent(renderer);
+                    break;
+                }
+        }
+        
+        //SDL_RenderClear(renderer);
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    
+    // Affichage de plusieurs carrés noirs pour remettre les lignes entre les cases
+        for (int i = 0; i < GRILLE; i++) {
+            for(int j=0;j<GRILLE;j++){
+                SDL_Rect rect = { i*40, 40*j, 40, 40 };
+                SDL_RenderDrawRect(renderer,&rect);
+            }
+            
+        }
+        SDL_RenderPresent(renderer);
+    }
+    
+
+    
     if(perdu){
         printf("BOUH PERDU HAHA LOSER \n");
-        liberer_matrice(plateau, GRILLE);
-        liberer_matrice(visible, GRILLE);
+        affichage_fin(renderer,visible,plateau);
+        SDL_Delay(3000);
+        
     }
-    else{
+    else if(gagne){
         printf("TU AS GAGNE TOUS LES MARISSONS\n");
-        liberer_matrice(plateau, GRILLE);
-        liberer_matrice(visible, GRILLE);
+        affichage_fin(renderer,visible,plateau);
+        SDL_Delay(3000);
+       
     }
+    
+    // Nettoyage
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+    liberer_matrice(plateau, GRILLE);
+    liberer_matrice(visible, GRILLE);
 
 }
+
 
 
 int main(){
