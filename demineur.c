@@ -640,6 +640,7 @@ void creer_arbre_decision(ARBRE a, int TAILLE_ELT){
 
 bool est_possible_situation(ELT m, int TAILLE_ELT){
     //Renvoie true si la situation décrite pas m est bien définie et false sinon
+    rand (time(NULL));
     bool res = true;
     for(int x = 0; x < TAILLE_ELT; x++){
         for(int y = 0; y < TAILLE_ELT; y++){
