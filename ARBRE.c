@@ -65,42 +65,58 @@ void ARBRE_aff_ss_ad(ARBRE a, ARBRE ad, bool * perr) {
   }
 } 
 
-ARBRE ARBRE_rechercher(ARBRE a, ELT elt) {
+ARBRE ARBRE_rechercher(ARBRE a, ELT elt, int TAILLE_ELT) {
   ARBRE at;
   /*cas de l'arbre vide */
   if(a==NULL) {
     return NULL;
   } else {
     /* si on a trouve */
-    if(ELT_eg(a->val,elt)) {
+    if(ELT_eg(a->val,elt,TAILLE_ELT)) {
       return a;
     } else {
       /* sinon on cherche a gauche */
-      at = ARBRE_rechercher(a->g,elt);
+      at = ARBRE_rechercher(a->g,elt, TAILLE_ELT);
       if(at!=NULL) {
 	return at;
       } else {
 	/* si pas trouve a gauche, on cherche a droite */
-	return ARBRE_rechercher(a->d,elt);
+	return ARBRE_rechercher(a->d,elt, TAILLE_ELT);
       }
     }
   }
 }
 
-void ARBRE_afficher(ARBRE a) {
+void ARBRE_afficher(ARBRE a, int TAILLE_ELT) {
   if(a==NULL) { /* Base : affichage de l'arbre vide */
     printf("NULL");
   } else { /* Recurrence */
     /* on affiche l'etiquette */ 
     printf("<");
-    ELT_afficher(a->val);
+    ELT_afficher(a->val, TAILLE_ELT);
     printf(",");
     /* on affiche a gauche */
-    ARBRE_afficher(a->g);
+    ARBRE_afficher(a->g, TAILLE_ELT);
     printf(",");
     /* on affiche a droite */
-    ARBRE_afficher(a->d);
+    ARBRE_afficher(a->d, TAILLE_ELT);
     printf(">");
+  }
+}
+
+void ARBRE_afficher_feuilles(ARBRE a, int TAILLE_ELT) {
+  if(a != NULL){
+    //Cas d'arrêt : arbre vide
+    if(a->g == NULL && a->d == NULL){
+      //Cas où a est une feuille : on affiche
+      ELT_afficher(a->val, TAILLE_ELT);
+      printf("---------------------------\n");
+    }
+    else{
+      //Cas où a n'est pas une feuille : récurrence
+      ARBRE_afficher_feuilles(a->g, TAILLE_ELT);
+      ARBRE_afficher_feuilles(a->d, TAILLE_ELT);
+    }
   }
 }
 
