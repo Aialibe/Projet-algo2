@@ -594,6 +594,195 @@ void jouer(char** plateau, char** visible, bool* perdu, bool* gagne, int* compte
     }
 }
 
+void prochaine_etape(ARBRE a, int etape, int nb_etapes, int case_centrale, int TAILLE_ELT){
+    if(etape < nb_etapes){
+        if(etape == case_centrale){
+            prochaine_etape(a, etape + 1, nb_etapes, case_centrale, TAILLE_ELT);
+        }
+        else{
+            int i = etape/TAILLE_ELT;
+            int j = etape%TAILLE_ELT;
+            if(a->val[i][j] == '#'){
+                ELT mat_mine = copier_matrice(a->val, TAILLE_ELT);
+                mat_mine[i][j] = 'D';
+                ELT mat_pas_mine = copier_matrice(a->val, TAILLE_ELT);
+                ARBRE a_mine = ARBRE_creer(mat_mine, NULL, NULL);
+                ARBRE a_pas_mine = ARBRE_creer(mat_pas_mine, NULL, NULL);
+                a->g = a_mine;
+                a->d = a_pas_mine;
+                prochaine_etape(a->g, etape + 1, nb_etapes, case_centrale, TAILLE_ELT);
+                prochaine_etape(a->d, etape + 1, nb_etapes, case_centrale, TAILLE_ELT);
+            }
+            else{
+                prochaine_etape(a, etape + 1, nb_etapes, case_centrale, TAILLE_ELT);
+            }
+        }
+    }
+}
+
+void creer_arbre_decision(ARBRE a, int TAILLE_ELT){
+    int MILIEU = TAILLE_ELT/2;
+    int nb_etapes = TAILLE_ELT*TAILLE_ELT;
+    int case_centrale = (MILIEU+1)*(MILIEU+1) + MILIEU*MILIEU - 1;
+    printf("case_centrale = %d\n", case_centrale);
+    prochaine_etape(a, 0, nb_etapes, case_centrale, TAILLE_ELT);
+}
+
+bool est_possible_situation(ELT m, int TAILLE_ELT){
+    //Renvoie true si la situation décrite pas m est bien définie et false sinon
+    bool res = true;
+    for(int x = 0; x < TAILLE_ELT; x++){
+        for(int y = 0; y < TAILLE_ELT; y++){
+            int nombre_voisins_pas_dans_matrice = 0;
+            if(m[x][y] >= '0' && m[x][y] <= '8'){
+                int nombre_drapeaux_adjacents = 0;
+                for(int i = -1; i <= 1; i++){
+                    for(int j = -1; j <= 1; j++){
+                        if(x + i >= 0 && x + i < TAILLE_ELT && y + j >= 0 && y + j < TAILLE_ELT){
+                            //Cas où la case (x+i, y+j) est dans la matrice m
+                            if(m[x+i][y+j] == 'D'){
+                                nombre_drapeaux_adjacents++;
+                            }
+                        }
+                        else{
+                            nombre_voisins_pas_dans_matrice++;
+                        }
+                    }
+                }
+                if(nombre_voisins_pas_dans_matrice == 0){
+                    if(nombre_drapeaux_adjacents != (m[x][y] - 48)){
+                        //48 est le code ascii de 0 donc m[x][y] - 48 correspond au chiffre associé au caractère m[x][y]
+                        res = false;
+                    }
+                }
+                else{
+                    if(nombre_drapeaux_adjacents > (m[x][y] - 48) || nombre_drapeaux_adjacents + nombre_voisins_pas_dans_matrice < (m[x][y] - 48)){
+                        res = false;
+                    }
+                }
+            }
+        }
+    }
+    return res;
+}
+
+void compter_feuilles_possibles(ARBRE a, int* nb_feuilles, int* nb_feuilles_possibles, int TAILLE_ELT){
+    //Met à jour le nombre de feuilles et le nombre de feuilles correspondant à un état possible du plateau dans a
+    if(a->g != NULL){
+        //a est un arbre binaire strict donc vérification de l'existence d'un des 2 fils suffit
+        //Cas où a n'est pas une feuille
+        compter_feuilles_possibles(a->g, nb_feuilles, nb_feuilles_possibles, TAILLE_ELT);
+        compter_feuilles_possibles(a->d, nb_feuilles, nb_feuilles_possibles, TAILLE_ELT);
+    }
+    else{
+        //Cas où a est une feuille
+        *nb_feuilles = *nb_feuilles + 1;
+        if(est_possible_situation(a->val, TAILLE_ELT)){
+            *nb_feuilles_possibles = *nb_feuilles_possibles + 1;
+        }
+    }
+}
+
+void ia(char** visible, int x_depart, int y_depart){
+    //Renvoie le pourcentage de chances que la case (x_depart, y_depart) soit une mine
+    //On suppose que (x_depart, y_depart) n'est pas découverte
+    int nombre_cases_non_decouvertes = 0;
+    int i = 1;
+    while(i < GRILLE){
+        for(int j = -i; j <= i; j++){
+            if(est_dans_plateau(x_depart-i, j)){
+                if(visible[x_depart-i][j] == '#'){
+                    nombre_cases_non_decouvertes++;
+                }
+            }
+            if(est_dans_plateau(x_depart+i, j)){
+                if(visible[x_depart+i][j] == '#'){
+                    nombre_cases_non_decouvertes++;
+                }
+            }
+            if(est_dans_plateau(j, y_depart-i)){
+                if(visible[j][y_depart-i] == '#'){
+                    nombre_cases_non_decouvertes++;
+                }
+            }
+            if(est_dans_plateau(j, y_depart+i)){
+                if(visible[j][y_depart+i] == '#'){
+                    nombre_cases_non_decouvertes++;
+                }
+            }
+        }
+        if(nombre_cases_non_decouvertes < 13){
+            i++;
+        }
+        else{
+            i-=1;
+            break;
+        }
+    }
+    if(i%2 == 0){
+        i-=1;       //TAILLE_ELT doit être impair
+    }
+    int TAILLE_ELT = i;
+    int MILIEU = TAILLE_ELT/2;
+
+    char** alentours = allouer_matrice(TAILLE_ELT);  //Cases adjacentes à (x_depart, y_depart)
+    for(int x = 0; x < TAILLE_ELT; x++){
+        for(int y = 0; y < TAILLE_ELT; y++){
+            if(est_dans_plateau(x_depart + x - MILIEU, y_depart + y - MILIEU)){
+                alentours[x][y] = visible[x_depart + x - MILIEU][y_depart + y - MILIEU];
+            }
+            else{
+                alentours[x][y] = '-';
+            }
+        }
+    }
+    //Création des arbres de décision :
+    ELT mat_mine = copier_matrice(alentours, TAILLE_ELT);
+    mat_mine[MILIEU][MILIEU] = 'D';
+    ARBRE a_mine = ARBRE_creer(mat_mine, NULL, NULL);
+    creer_arbre_decision(a_mine, TAILLE_ELT);
+
+    ELT mat_pas_mine = copier_matrice(alentours, TAILLE_ELT);
+    ARBRE a_pas_mine = ARBRE_creer(mat_pas_mine, NULL, NULL);
+    creer_arbre_decision(a_pas_mine, TAILLE_ELT);
+
+    printf("a_mine :\n");
+    ARBRE_afficher_feuilles(a_mine, TAILLE_ELT);
+    printf("a_pas_mine\n");
+    ARBRE_afficher_feuilles(a_pas_mine, TAILLE_ELT);
+
+    int nb_feuilles_a_mine = 0;
+    int nb_feuilles_possibles_a_mine = 0;
+    compter_feuilles_possibles(a_mine, &nb_feuilles_a_mine, &nb_feuilles_possibles_a_mine, TAILLE_ELT);
+
+    int nb_feuilles_a_pas_mine = 0;
+    int nb_feuilles_possibles_a_pas_mine = 0;
+    compter_feuilles_possibles(a_pas_mine, &nb_feuilles_a_pas_mine, &nb_feuilles_possibles_a_pas_mine, TAILLE_ELT);
+
+    float ratio_possible_mine = (float)nb_feuilles_possibles_a_mine/(float)nb_feuilles_a_mine;
+    float ratio_possible_pas_mine = (float)nb_feuilles_possibles_a_pas_mine/(float)nb_feuilles_a_pas_mine;
+
+    bool securise;
+    bool certitude;
+    if(ratio_possible_mine == 0){
+        securise = true;
+        certitude = true;
+    }
+    else if(ratio_possible_pas_mine == 0){
+        securise = false;
+        certitude = true;
+    }
+    else{
+        certitude = false;
+        if(ratio_possible_pas_mine > ratio_possible_mine){
+            securise = true;
+        }
+        else{
+            securise = false;
+        }
+    }
+}
+
 
 void fonction_principale(){
     bool perdu = false;
