@@ -50,6 +50,16 @@ char** allouer_matrice(int taille){
     return mat;
 }
 
+char** copier_matrice(char** mat, int taille){
+    char** m = allouer_matrice(taille);
+    for(int i = 0; i < taille; i++){
+        for(int j = 0; j < taille; j++){
+            m[i][j] = mat[i][j];
+        }
+    }
+    return m;
+}
+
 void liberer_matrice(char** mat,int taille){
     for(int i=0;i<taille;i++){
         free(mat[i]);
