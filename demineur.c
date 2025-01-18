@@ -622,18 +622,15 @@ void ia(char** visible, int x_depart, int y_depart){
     //On suppose que (x_depart, y_depart) n'est pas découverte
     int nombre_cases_non_decouvertes = 0;
     int i = 1;
-    while(i < GRILLE){
+     while(i < GRILLE){
         for(int j = -i; j <= i; j++){
             if(est_dans_plateau(x_depart-i, j)){
                 if(visible[x_depart-i][j] == '#'){
                     nombre_cases_non_decouvertes++;
                 }
             }
-            if(est_dans_plateau(x_depart+i, j)){
-                if(visible[x_depart+i][j] == '#'){
-                    nombre_cases_non_decouvertes++;
-                }
-            }
+        }
+        for(int j = -i + 1; j <= i; j++){
             if(est_dans_plateau(j, y_depart-i)){
                 if(visible[j][y_depart-i] == '#'){
                     nombre_cases_non_decouvertes++;
@@ -641,6 +638,13 @@ void ia(char** visible, int x_depart, int y_depart){
             }
             if(est_dans_plateau(j, y_depart+i)){
                 if(visible[j][y_depart+i] == '#'){
+                    nombre_cases_non_decouvertes++;
+                }
+            }
+        }
+        for(int j = -i + 1; j < i; j++){
+            if(est_dans_plateau(x_depart+i, j)){
+                if(visible[x_depart+i][j] == '#'){
                     nombre_cases_non_decouvertes++;
                 }
             }
