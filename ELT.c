@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include "ELT.h"
 
-bool ELT_eg(ELT e1, ELT e2) {
+bool ELT_eg(ELT e1, ELT e2, int TAILLE_ELT) {
   bool res = true;
-  for(int x = 0; x < 3; x++){
-    for(int y = 0; y < 3; y++){
+  for(int x = 0; x < TAILLE_ELT; x++){
+    for(int y = 0; y < TAILLE_ELT; y++){
       if(e1[x][y] != e2[x][y]){
         res = false;
       }
@@ -13,15 +13,15 @@ bool ELT_eg(ELT e1, ELT e2) {
   return res;
 }
 
-void ELT_afficher(ELT e) {
-  printf("    ");
-  for(int k=0; k<3;k++){
+void ELT_afficher(ELT e, int TAILLE_ELT) {
+  printf("\n    ");
+  for(int k=0; k<TAILLE_ELT;k++){
       printf("%d ",k);
   }
   printf("\n\n");
-  for(int i=0;i<3;i++){
+  for(int i=0;i<TAILLE_ELT;i++){
       printf("%d   ",i);
-      for(int j=0;j<3;j++){
+      for(int j=0;j<TAILLE_ELT;j++){
           printf("%c ",e[i][j]);
       }
     printf("\n");
