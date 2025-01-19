@@ -120,10 +120,11 @@ void ARBRE_afficher_feuilles(ARBRE a, int TAILLE_ELT) {
   }
 }
 
-void ARBRE_liberer(ARBRE a){
+void ARBRE_liberer(ARBRE a, int TAILLE_ELT){
     if(a != NULL){
-        ARBRE_liberer(a->d);
-        ARBRE_liberer(a->g);
+        ELT_liberer(a->val, TAILLE_ELT);
+        ARBRE_liberer(a->d, TAILLE_ELT);
+        ARBRE_liberer(a->g, TAILLE_ELT);
         free(a);
     }
 }
