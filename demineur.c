@@ -77,7 +77,6 @@ void initialiser_plateau(char** plateau){
     }
     while(i < MINES){
         int mine = rand() % (GRILLE*GRILLE);
-        printf("%d \n",mine);
         int x = trouver_position_x_depuis_identifiant(mine);
         int y = trouver_position_y_depuis_identifiant(mine);
         if(plateau[x][y] != 'M'){
@@ -417,7 +416,7 @@ void mettre_a_jour_affichage(SDL_Renderer *renderer, char** visible, char** plat
                 }
             }
         }
-        printf("\n");
+        
     }
 }
 
@@ -427,6 +426,12 @@ void affichage_fin(SDL_Renderer *renderer, char** visible, char** plateau){
         for(int j=0; j<GRILLE;j++){
             if(visible[i][j]=='D' ){
                 afficher_drapeau(renderer,j,i);
+            }
+            else if(visible[i][j]=='M' ){
+                SDL_Rect rect = { x, y, 39, 39 };
+                SDL_SetRenderDrawColor(renderer, 60, 60, 60, 255);//gris
+                SDL_RenderFillRect(renderer, &rect);
+                afficher_bombe(renderer,j,i);
             }
             else{//la case est dévoilée
                 switch (plateau[i][j]){
@@ -454,7 +459,7 @@ void affichage_fin(SDL_Renderer *renderer, char** visible, char** plateau){
                 }
             }
         }
-        printf("\n");
+        
     }
 }
 
@@ -557,7 +562,6 @@ void creer_arbre_decision(ARBRE a, int TAILLE_ELT){
     int MILIEU = TAILLE_ELT/2;
     int nb_etapes = TAILLE_ELT*TAILLE_ELT;
     int case_centrale = (MILIEU+1)*(MILIEU+1) + MILIEU*MILIEU - 1;
-    printf("case_centrale = %d\n", case_centrale);
     prochaine_etape(a, 0, nb_etapes, case_centrale, TAILLE_ELT);
 }
 
@@ -656,11 +660,11 @@ void ia(char** visible, int x_depart, int y_depart){
             break;
         }
     }
-    printf("nombre_cases_non_decouvertes = %d\n", nombre_cases_non_decouvertes);
+    
     int MILIEU = i;
     int TAILLE_ELT = (2*MILIEU) + 1;
 
-    printf("TAILLE_ELT = %d\n", TAILLE_ELT);
+   
 
     char** alentours = allouer_matrice(TAILLE_ELT);  //Cases adjacentes à (x_depart, y_depart)
     for(int x = 0; x < TAILLE_ELT; x++){
@@ -683,9 +687,9 @@ void ia(char** visible, int x_depart, int y_depart){
     ARBRE a_pas_mine = ARBRE_creer(mat_pas_mine, NULL, NULL);
     creer_arbre_decision(a_pas_mine, TAILLE_ELT);
 
-    printf("a_mine :\n");
+    
     ARBRE_afficher_feuilles(a_mine, TAILLE_ELT);
-    printf("a_pas_mine\n");
+   
     ARBRE_afficher_feuilles(a_pas_mine, TAILLE_ELT);
 
     int nb_feuilles_a_mine = 0;
@@ -699,8 +703,8 @@ void ia(char** visible, int x_depart, int y_depart){
     float ratio_possible_mine = (float)nb_feuilles_possibles_a_mine/(float)nb_feuilles_a_mine;
     float ratio_possible_pas_mine = (float)nb_feuilles_possibles_a_pas_mine/(float)nb_feuilles_a_pas_mine;
 
-    printf("ratio_possible_mine = %f\n", ratio_possible_mine);
-    printf("ratio_possible_pas_mine = %f\n", ratio_possible_pas_mine);
+    //printf("ratio_possible_mine = %f\n", ratio_possible_mine);
+    //printf("ratio_possible_pas_mine = %f\n", ratio_possible_pas_mine);
 
     ARBRE_liberer(a_mine, TAILLE_ELT);
     ARBRE_liberer(a_pas_mine, TAILLE_ELT);
@@ -763,28 +767,28 @@ void jouer(char** plateau, char** visible, bool* perdu, bool* gagne, int* compte
       
       if(action == 1){
           //Le joueur casse une case
-          printf("cas 1 \n");
+          
           if(visible[x][y] == 'D'){
-              printf("cas 1.D \n");
+             
               printf("Action impossible\n");
               //jouer(plateau, visible, perdu, gagne, compteur_mines,x,y);
           }
           else if(plateau[x][y] == 'M'){
-              printf("cas 1.M \n");
+             
               //Le jouer essaye de casser une mine : défaite
               *compteur_mines -= 1;
               *perdu = true;
               plateau[x][y] = 'X';       //Marquage resérvé pour la mine qui a fait perdre le jouer sous reserve d'existence
           }
           else{
-              printf("cas 1.autre \n");
+              
               bool bien_places = false;
               int nombre_drapeaux_adjacents = compter_drapeaux_adjacents(plateau, visible, &bien_places, x, y);
-              printf("x = %d | y = %d\n", x, y);
+              
               if(visible[x][y] >= '1' && visible[x][y] <= '9' && nombre_drapeaux_adjacents == visible[x][y] - 48){
                   //48 est le code ascii de 0 donc visible[x][y] - 48 correspond au chiffre associé au caractère visible[x][y]
                   if(bien_places){
-                      printf("cas 1.autre.particulier.decouvre \n");
+                      
                       for(int i = -1; i <= 1; i++){
                           for(int j = -1; j <= 1; j++){
                               if(est_dans_plateau(x+i,y+j)){
@@ -796,36 +800,36 @@ void jouer(char** plateau, char** visible, bool* perdu, bool* gagne, int* compte
                       }
                   }
                   else{
-                      printf("cas 1.autre.particulier.perdu \n");
+                      
                       *perdu = true;
                   }
                   
               }
               else{
-                  printf("cas 1.autre.decouvr \n");
+                  
                   //Le joueur découvre un chiffre
                   decouvrir_chiffes_adjacents(plateau, visible, x, y);
               }
           }
       }
       else if(action==2){
-          printf("cas 2 \n");
+        
           //Le joueur pose ou casse un drapeau
           if(visible[x][y] == 'D'){
-              printf("cas 2.D \n");
+              
               //La case visée était un drapeau donc on le casse
-              printf("avant \n");
+              
               visible[x][y] = '#';
-              printf("apres\n");
+              
           }
           else if(visible[x][y] == '#'){
-              printf("cas 2.# \n");
+              
               //La case visée n'est pas un drapeau et n'est pas découverte, elle devient un drapeau
               visible[x][y] = 'D';
           }
           else{
               //Le joueur essaye de poser un drapeau sur une case déjà découverte
-              printf("cas 2.imposs \n");
+              
               printf("Action impossible\n");
               //jouer(plateau, visible, perdu, gagne, compteur_mines,x,y,action);
               /*Quznd on fait une action impossible (casser la ou ya un drapeau), et qu'on, dans le meme tour, 
@@ -833,7 +837,7 @@ void jouer(char** plateau, char** visible, bool* perdu, bool* gagne, int* compte
           }
       }
       else{//action = 3, clique molette donc ia
-        printf("action = 3\n");
+        
         ia(visible,x,y);
       }
     }
@@ -862,7 +866,7 @@ void fonction_principale(){
         //return 1;
     }
     // Création de la fenêtre
-    SDL_Window* window = SDL_CreateWindow("Affichage de carrés", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, GRILLE*40, GRILLE*40, SDL_WINDOW_SHOWN);
+    SDL_Window* window = SDL_CreateWindow("Demineur", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, GRILLE*40, GRILLE*40, SDL_WINDOW_SHOWN);
     SDL_SetWindowTitle(window,"Demineur");
     // Création du renderer
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
@@ -893,18 +897,18 @@ void fonction_principale(){
                     buttons =SDL_GetMouseState(&x, &y);
                     
                     quelle_case(x,y,kase);//je recupère la case ou on a clique
-                    SDL_Log("+clic en %d %d",kase[0],kase[1]);
+                    //SDL_Log("+clic en %d %d",kase[0],kase[1]);
                     action=0;
                     if (buttons & SDL_BUTTON(SDL_BUTTON_LEFT)){
                         action=1;//clique gauche
-                        printf("gauche");
+                        
                     }
                     else if(buttons & SDL_BUTTON(SDL_BUTTON_RIGHT)){
-                        printf("droite");
+                        
                         action=2;
                     }
                     else if(buttons & SDL_BUTTON(SDL_BUTTON_MIDDLE)){
-                        printf("clique molette");
+                        
                         action=3;
                     }
                     
@@ -915,8 +919,6 @@ void fonction_principale(){
                     printf("Temps écoulé jusqu'ici : %d secondes \n\n",temps_ecoule_depuis_debut);
                     mettre_a_jour_affichage(renderer,visible, plateau);
                     afficher_matrice_utilisateur(visible,plateau);
-                    //SDL_RenderPresent(renderer);
-                        //SDL_RenderClear(renderer);
                     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
                 
                 // Affichage de plusieurs carrés noirs pour remettre les lignes entre les cases
@@ -940,13 +942,13 @@ void fonction_principale(){
 
     
     if(perdu){
-        printf("BOUH PERDU HAHA LOSER \n");
+        printf("Tu as perdu, essaye encore. \n");
         affichage_fin(renderer,visible,plateau);
         SDL_Delay(3000);
         
     }
     else if(gagne){
-        printf("TU AS GAGNE TOUS LES MARISSONS\n");
+        printf("Félicitation ! Tu as gagné !\n");
         affichage_fin(renderer,visible,plateau);
         SDL_Delay(3000);
        
