@@ -940,13 +940,13 @@ void fonction_principale(){
 
     
     if(perdu){
-        printf("Tu as perdu, essaye encore. \n");
+        printf("Tu as perdu, essaye encore. \n Tu as passé %ld secondes à jouer. \n",((clock()-t_depart) /CLOCKS_PER_SEC));
         affichage_fin(renderer,visible,plateau);
         SDL_Delay(3000);
         
     }
     else if(gagne){
-        printf("Félicitation ! Tu as gagné !\n");
+        printf("Félicitation ! Tu as gagné !\nT u as passé %ld secondes à jouer. \n",((clock()-t_depart) /CLOCKS_PER_SEC));
         affichage_fin(renderer,visible,plateau);
         SDL_Delay(3000);
        
