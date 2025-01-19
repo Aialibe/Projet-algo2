@@ -649,7 +649,7 @@ void ia(char** visible, int x_depart, int y_depart){
                 }
             }
         }
-        if(nombre_cases_non_decouvertes < 10){
+        if(nombre_cases_non_decouvertes < 8){
             i++;
         }
         else{
@@ -683,9 +683,6 @@ void ia(char** visible, int x_depart, int y_depart){
     ARBRE a_pas_mine = ARBRE_creer(mat_pas_mine, NULL, NULL);
     creer_arbre_decision(a_pas_mine, TAILLE_ELT);
 
-    liberer_matrice(alentours, TAILLE_ELT);
-    liberer_matrice(mat_pas_mine, TAILLE_ELT);
-
     printf("a_mine :\n");
     ARBRE_afficher_feuilles(a_mine, TAILLE_ELT);
     printf("a_pas_mine\n");
@@ -705,8 +702,10 @@ void ia(char** visible, int x_depart, int y_depart){
     printf("ratio_possible_mine = %f\n", ratio_possible_mine);
     printf("ratio_possible_pas_mine = %f\n", ratio_possible_pas_mine);
 
-    ARBRE_liberer(a_mine);
-    ARBRE_liberer(a_pas_mine);
+    ARBRE_liberer(a_mine, TAILLE_ELT);
+    ARBRE_liberer(a_pas_mine, TAILLE_ELT);
+
+    liberer_matrice(alentours, TAILLE_ELT);
 
     bool securise;
     bool certitude;
@@ -959,7 +958,6 @@ void fonction_principale(){
     SDL_Quit();
     liberer_matrice(plateau, GRILLE);
     liberer_matrice(visible, GRILLE);
-
 }
 
 
