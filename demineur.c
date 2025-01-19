@@ -1,3 +1,4 @@
+//dernière version de demineur.c sur le github
 #include <stdio.h>
 #include <malloc.h>
 #include <stdlib.h>
@@ -7,8 +8,8 @@
 #include <SDL2/SDL.h>
 #include "ARBRE.h"
 
-#define MINES 40
-#define GRILLE 16
+#define MINES 5
+#define GRILLE 10
 #define GRIS 189
 #define EPAIS 3
 
@@ -508,7 +509,7 @@ int compter_drapeaux_adjacents(char** plateau, char** visible, bool* bien_places
     return nombre_drapeaux;
 }
 
-bool est_ce_quon_a_gagne(char** visible, int taille, int compteur_mines){
+bool est_ce_quon_a_gagne(char** visible, int taille){
     int compteur_de_drapeau=0;
     for(int i=0;i<taille;i++){
         for(int j=0;j<taille;j++){
@@ -520,7 +521,7 @@ bool est_ce_quon_a_gagne(char** visible, int taille, int compteur_mines){
             }
         }
     }
-    return (compteur_de_drapeau==compteur_mines);
+    return (compteur_de_drapeau==MINES);
 }
 
 
@@ -813,7 +814,7 @@ void jouer(char** plateau, char** visible, bool* perdu, bool* gagne, int* compte
           if(visible[x][y] == 'D'){
               
               //La case visée était un drapeau donc on le casse
-              
+              *compteur_mines+=1;
               visible[x][y] = '#';
               
           }
@@ -821,6 +822,7 @@ void jouer(char** plateau, char** visible, bool* perdu, bool* gagne, int* compte
               
               //La case visée n'est pas un drapeau et n'est pas découverte, elle devient un drapeau
               visible[x][y] = 'D';
+              *compteur_mines-=1;
           }
           else{
               //Le joueur essaye de poser un drapeau sur une case déjà découverte
@@ -870,7 +872,7 @@ void fonction_principale(){
 
 
     afficher_matrice_utilisateur(visible, plateau);
-    afficher_matrice(plateau,GRILLE);
+
     t_depart = clock(); //le temps au debut de la partie, ce qui nous interesse c'est la difference de temps
     int x; int y; int action=0;
     Uint32 buttons;
@@ -911,6 +913,7 @@ void fonction_principale(){
                     free(kase);
                     t_apres_tour=clock();
                     temps_ecoule_depuis_debut=(t_apres_tour-t_depart) /CLOCKS_PER_SEC;
+                    printf("Il reste encore %d mines à trouver.\n",compteur_mines);
                     printf("Temps écoulé jusqu'ici : %d secondes \n\n",temps_ecoule_depuis_debut);
                     mettre_a_jour_affichage(renderer,visible, plateau);
                     afficher_matrice_utilisateur(visible,plateau);
@@ -928,7 +931,7 @@ void fonction_principale(){
                                 break;
                                 
                 }
-                gagne=est_ce_quon_a_gagne(visible, GRILLE, compteur_mines);
+                gagne=est_ce_quon_a_gagne(visible, GRILLE);
         }
         
     
