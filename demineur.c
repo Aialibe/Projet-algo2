@@ -705,7 +705,7 @@ void ia(char** visible, int x_depart, int y_depart){
     ARBRE_liberer(a_pas_mine);
     liberer_matrice(alentours, TAILLE_ELT);
     liberer_matrice(mat_pas_mine, TAILLE_ELT);
-    liberer_matrice(mat_mine,TAILLER_ELT);
+    liberer_matrice(mat_mine,TAILLE_ELT);
   
     bool securise;
     bool certitude;
