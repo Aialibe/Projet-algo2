@@ -620,6 +620,8 @@ void compter_feuilles_possibles(ARBRE a, int* nb_feuilles, int* nb_feuilles_poss
 void ia(char** visible, int x_depart, int y_depart){
     //Renvoie le pourcentage de chances que la case (x_depart, y_depart) soit une mine
     //On suppose que (x_depart, y_depart) n'est pas découverte
+
+    //Détermination de la précision
     int nombre_cases_non_decouvertes = 0;
     int i = 1;
     while(i < GRILLE){
@@ -661,7 +663,7 @@ void ia(char** visible, int x_depart, int y_depart){
     int TAILLE_ELT = (2*MILIEU) + 1;
 
    
-
+    //Construction des arbres
     char** alentours = allouer_matrice(TAILLE_ELT);  //Cases adjacentes à (x_depart, y_depart)
     for(int x = 0; x < TAILLE_ELT; x++){
         for(int y = 0; y < TAILLE_ELT; y++){
@@ -683,6 +685,7 @@ void ia(char** visible, int x_depart, int y_depart){
     ARBRE a_pas_mine = ARBRE_creer(mat_pas_mine, NULL, NULL);
     creer_arbre_decision(a_pas_mine, TAILLE_ELT);
 
+    //Calcul des ratios
     int nb_feuilles_a_mine = 0;
     int nb_feuilles_possibles_a_mine = 0;
     compter_feuilles_possibles(a_mine, &nb_feuilles_a_mine, &nb_feuilles_possibles_a_mine, TAILLE_ELT);
@@ -702,6 +705,7 @@ void ia(char** visible, int x_depart, int y_depart){
 
     liberer_matrice(alentours, TAILLE_ELT);
 
+    //Analyse des données
     bool securise;
     bool certitude;
     if(ratio_possible_mine == 0){
@@ -746,7 +750,6 @@ void ia(char** visible, int x_depart, int y_depart){
         printf("pas securisé\n");
     }
 }
-
 
 
 
