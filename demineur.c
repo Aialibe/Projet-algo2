@@ -8,8 +8,8 @@
 #include <SDL2/SDL.h>
 #include "ARBRE.h"
 
-#define MINES 5
-#define GRILLE 10
+#define MINES 40
+#define GRILLE 16
 #define GRIS 189
 #define EPAIS 3
 
