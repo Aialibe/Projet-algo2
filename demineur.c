@@ -8,7 +8,7 @@
 #include <SDL2/SDL.h>
 #include "ARBRE.h"
 
-#define MINES 40
+#define MINES 20
 #define GRILLE 16
 #define GRIS 189
 #define EPAIS 3
@@ -561,10 +561,11 @@ void creer_arbre_decision(ARBRE a, int TAILLE_ELT){
     prochaine_etape(a, 0, nb_etapes, case_centrale, TAILLE_ELT);
 }
 
-bool est_possible_situation(ELT m, int TAILLE_ELT){
+bool est_possible_situation(ELT m, int TAILLE_ELT, int compteur_mines){
     //Renvoie true si la situation décrite pas m est bien définie et false sinon
    
     bool res = true;
+    int nombre_drapeaux = 0;
     for(int x = 0; x < TAILLE_ELT; x++){
         for(int y = 0; y < TAILLE_ELT; y++){
             int nombre_voisins_pas_dans_matrice = 0;
@@ -595,29 +596,32 @@ bool est_possible_situation(ELT m, int TAILLE_ELT){
                     }
                 }
             }
+            else if(m[x][y] == 'D'){
+                nombre_drapeaux++;
+            }
         }
     }
-    return res;
+    return res && (nombre_drapeaux <= compteur_mines);
 }
 
-void compter_feuilles_possibles(ARBRE a, int* nb_feuilles, int* nb_feuilles_possibles, int TAILLE_ELT){
+void compter_feuilles_possibles(ARBRE a, int* nb_feuilles, int* nb_feuilles_possibles, int TAILLE_ELT, int compteur_mines){
     //Met à jour le nombre de feuilles et le nombre de feuilles correspondant à un état possible du plateau dans a
     if(a->g != NULL){
         //a est un arbre binaire strict donc vérification de l'existence d'un des 2 fils suffit
         //Cas où a n'est pas une feuille
-        compter_feuilles_possibles(a->g, nb_feuilles, nb_feuilles_possibles, TAILLE_ELT);
-        compter_feuilles_possibles(a->d, nb_feuilles, nb_feuilles_possibles, TAILLE_ELT);
+        compter_feuilles_possibles(a->g, nb_feuilles, nb_feuilles_possibles, TAILLE_ELT, compteur_mines);
+        compter_feuilles_possibles(a->d, nb_feuilles, nb_feuilles_possibles, TAILLE_ELT, compteur_mines);
     }
     else{
         //Cas où a est une feuille
         *nb_feuilles = *nb_feuilles + 1;
-        if(est_possible_situation(a->val, TAILLE_ELT)){
+        if(est_possible_situation(a->val, TAILLE_ELT, compteur_mines)){
             *nb_feuilles_possibles = *nb_feuilles_possibles + 1;
         }
     }
 }
 
-void ia(char** visible, int x_depart, int y_depart){
+void ia(char** visible, int x_depart, int y_depart, int compteur_mines){
     //Renvoie le pourcentage de chances que la case (x_depart, y_depart) soit une mine
     //On suppose que (x_depart, y_depart) n'est pas découverte
 
@@ -688,11 +692,11 @@ void ia(char** visible, int x_depart, int y_depart){
     //Calcul des ratios
     int nb_feuilles_a_mine = 0;
     int nb_feuilles_possibles_a_mine = 0;
-    compter_feuilles_possibles(a_mine, &nb_feuilles_a_mine, &nb_feuilles_possibles_a_mine, TAILLE_ELT);
+    compter_feuilles_possibles(a_mine, &nb_feuilles_a_mine, &nb_feuilles_possibles_a_mine, TAILLE_ELT, compteur_mines);
 
     int nb_feuilles_a_pas_mine = 0;
     int nb_feuilles_possibles_a_pas_mine = 0;
-    compter_feuilles_possibles(a_pas_mine, &nb_feuilles_a_pas_mine, &nb_feuilles_possibles_a_pas_mine, TAILLE_ELT);
+    compter_feuilles_possibles(a_pas_mine, &nb_feuilles_a_pas_mine, &nb_feuilles_possibles_a_pas_mine, TAILLE_ELT, compteur_mines);
 
     float ratio_possible_mine = (float)nb_feuilles_possibles_a_mine/(float)nb_feuilles_a_mine;
     float ratio_possible_pas_mine = (float)nb_feuilles_possibles_a_pas_mine/(float)nb_feuilles_a_pas_mine;
@@ -833,7 +837,7 @@ void jouer(char** plateau, char** visible, bool* perdu, bool* gagne, int* compte
       }
       else{//action = 3, clique molette donc ia
         
-        ia(visible,x,y);
+        ia(visible,x,y,*compteur_mines);
       }
     }
 }
@@ -944,7 +948,7 @@ void fonction_principale(){
         
     }
     else if(gagne){
-        printf("Félicitation ! Tu as gagné !\nT u as passé %ld secondes à jouer. \n",((clock()-t_depart) /CLOCKS_PER_SEC));
+        printf("Félicitations ! Tu as gagné !\nTu as passé %ld secondes à jouer. \n",((clock()-t_depart) /CLOCKS_PER_SEC));
         affichage_fin(renderer,visible,plateau);
         SDL_Delay(3000);
        
