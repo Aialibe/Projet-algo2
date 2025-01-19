@@ -427,12 +427,7 @@ void affichage_fin(SDL_Renderer *renderer, char** visible, char** plateau){
             if(visible[i][j]=='D' ){
                 afficher_drapeau(renderer,j,i);
             }
-            else if(visible[i][j]=='M' ){
-                SDL_Rect rect = { x, y, 39, 39 };
-                SDL_SetRenderDrawColor(renderer, 60, 60, 60, 255);//gris
-                SDL_RenderFillRect(renderer, &rect);
-                afficher_bombe(renderer,j,i);
-            }
+            
             else{//la case est dévoilée
                 switch (plateau[i][j]){
                     case '0': afficher_zero(renderer,j,i);
