@@ -683,11 +683,6 @@ void ia(char** visible, int x_depart, int y_depart){
     ARBRE a_pas_mine = ARBRE_creer(mat_pas_mine, NULL, NULL);
     creer_arbre_decision(a_pas_mine, TAILLE_ELT);
 
-    
-    ARBRE_afficher_feuilles(a_mine, TAILLE_ELT);
-   
-    ARBRE_afficher_feuilles(a_pas_mine, TAILLE_ELT);
-
     int nb_feuilles_a_mine = 0;
     int nb_feuilles_possibles_a_mine = 0;
     compter_feuilles_possibles(a_mine, &nb_feuilles_a_mine, &nb_feuilles_possibles_a_mine, TAILLE_ELT);
