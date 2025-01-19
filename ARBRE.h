@@ -13,4 +13,4 @@ void ARBRE_aff_ss_ad(ARBRE, ARBRE, bool *);
 ARBRE ARBRE_rechercher(ARBRE, ELT, int);
 void ARBRE_afficher(ARBRE, int);
 void ARBRE_afficher_feuilles(ARBRE, int);
-void ARBRE_liberer(ARBRE);
+void ARBRE_liberer(ARBRE,int);
