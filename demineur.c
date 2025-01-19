@@ -717,6 +717,10 @@ void ia(char** visible, int x_depart, int y_depart){
         securise = false;
         certitude = true;
     }
+    else if(ratio_possible_mine == 1 && ratio_possible_pas_mine == 1){
+        securise = false;
+        certitude = false;
+    }
     else if(ratio_possible_mine == 1){
         securise = true;
         certitude = true;
