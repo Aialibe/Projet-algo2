@@ -7,8 +7,8 @@
 #include <SDL2/SDL.h>
 #include "ARBRE.h"
 
-#define MINES 5
-#define GRILLE 10
+#define MINES 40
+#define GRILLE 16
 #define GRIS 189
 #define EPAIS 3
 
@@ -120,7 +120,7 @@ void afficher_matrice_utilisateur(char** visible, char** plateau){
         printf("%2d   ",i);
         for(int j=0; j<GRILLE;j++){
             if(visible[i][j]=='D' || visible[i][j]=='#' || visible[i][j]=='X'){//si on a mis un drapeau ou la case n'est pas devoilee
-                printf("%c ",visible[i][j]);
+                printf("%2c ",visible[i][j]);
             }
             else{//la case est dévoilée
                 printf("%2c ",plateau[i][j]);
@@ -643,24 +643,24 @@ void ia(char** visible, int x_depart, int y_depart){
             }
         }
         for(int j = -i + 1; j < i; j++){
-            if(est_dans_plateau(x_depart+i,y_depart+ j)){
+            if(est_dans_plateau(x_depart+i, y_depart+j)){
                 if(visible[x_depart+i][y_depart+j] == '#'){
                     nombre_cases_non_decouvertes++;
                 }
             }
         }
-        if(nombre_cases_non_decouvertes < 15){
+        if(nombre_cases_non_decouvertes < 10){
             i++;
         }
         else{
             break;
         }
     }
-    if(i%2 == 0){
-        i-=1;       //TAILLE_ELT doit être impair
-    }
-    int TAILLE_ELT = i;
-    int MILIEU = TAILLE_ELT/2;
+    printf("nombre_cases_non_decouvertes = %d\n", nombre_cases_non_decouvertes);
+    int MILIEU = i;
+    int TAILLE_ELT = (2*MILIEU) + 1;
+
+    printf("TAILLE_ELT = %d\n", TAILLE_ELT);
 
     char** alentours = allouer_matrice(TAILLE_ELT);  //Cases adjacentes à (x_depart, y_depart)
     for(int x = 0; x < TAILLE_ELT; x++){
@@ -682,8 +682,9 @@ void ia(char** visible, int x_depart, int y_depart){
     ELT mat_pas_mine = copier_matrice(alentours, TAILLE_ELT);
     ARBRE a_pas_mine = ARBRE_creer(mat_pas_mine, NULL, NULL);
     creer_arbre_decision(a_pas_mine, TAILLE_ELT);
-  
-    
+
+    liberer_matrice(alentours, TAILLE_ELT);
+    liberer_matrice(mat_pas_mine, TAILLE_ELT);
 
     printf("a_mine :\n");
     ARBRE_afficher_feuilles(a_mine, TAILLE_ELT);
@@ -701,12 +702,12 @@ void ia(char** visible, int x_depart, int y_depart){
     float ratio_possible_mine = (float)nb_feuilles_possibles_a_mine/(float)nb_feuilles_a_mine;
     float ratio_possible_pas_mine = (float)nb_feuilles_possibles_a_pas_mine/(float)nb_feuilles_a_pas_mine;
 
+    printf("ratio_possible_mine = %f\n", ratio_possible_mine);
+    printf("ratio_possible_pas_mine = %f\n", ratio_possible_pas_mine);
+
     ARBRE_liberer(a_mine);
     ARBRE_liberer(a_pas_mine);
-    liberer_matrice(alentours, TAILLE_ELT);
-    liberer_matrice(mat_pas_mine, TAILLE_ELT);
-    liberer_matrice(mat_mine,TAILLE_ELT);
-  
+
     bool securise;
     bool certitude;
     if(ratio_possible_mine == 0){
@@ -748,7 +749,7 @@ void ia(char** visible, int x_depart, int y_depart){
         printf("securisé\n");
     }
     else{
-        printf("pas securisé");
+        printf("pas securisé\n");
     }
 }
 
@@ -873,7 +874,7 @@ void fonction_principale(){
     afficher_matrice_utilisateur(visible, plateau);
     afficher_matrice(plateau,GRILLE);
     t_depart = clock(); //le temps au debut de la partie, ce qui nous interesse c'est la difference de temps
-    
+    int x; int y; int action=0;
     Uint32 buttons;
     SDL_Event events; 
     SDL_bool run = SDL_TRUE;
@@ -886,7 +887,8 @@ void fonction_principale(){
                         run = SDL_FALSE;//on ferme la fenetre et fin du jeu
                     break;
                 case SDL_MOUSEBUTTONDOWN: // Click de souris 
-                    int x; int y; int action=0;
+                    //int x; int y; int action=0;
+                    action=0;
                     int* kase=malloc(sizeof(int)*2);
                     //int* kase;
                     buttons =SDL_GetMouseState(&x, &y);
