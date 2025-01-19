@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "ELT.h"
 
 bool ELT_eg(ELT e1, ELT e2, int TAILLE_ELT) {
@@ -27,4 +28,11 @@ void ELT_afficher(ELT e, int TAILLE_ELT) {
     printf("\n");
   }
   printf("\n");
+}
+
+void ELT_liberer(ELT e, int TAILLE_ELT){
+  for(int i = 0; i < TAILLE_ELT; i++){
+    free(e[i]);
+  }
+  free(e);
 }
